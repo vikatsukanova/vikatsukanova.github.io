@@ -1,0 +1,1599 @@
+@font-face {
+    font-family: 'Menlo Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Menlo'), url('../fonts/menlo/Menlo-Regular.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: "FuturaRegular";
+    src: url("../fonts/futura/FuturaRegular.eot");
+    src: url("../fonts/futura/FuturaRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/futura/FuturaRegular.woff") format("woff"),
+    url("../fonts/futura/FuturaRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Menlo Regular";
+    color: #413847;
+    font-size: 100%;
+}
+
+#wrapper{
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 10px;
+/*    padding: 5% 5%;*/
+    
+}
+
+.filter-wrapper{
+    max-width: 1100px!important;
+
+}
+
+
+h1, h2, h3, h4, h5{
+    font-family: "FuturaRegular";
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h1{
+    font-size: 30px;
+}
+
+h2{
+    font-size: 22px;
+    font-weight: lighter;
+}
+
+h3{
+   font-size: 18px;
+}
+
+h4{
+    font-size: 16px;
+/*    color: #fb5c33;*/
+    
+}
+
+h5{
+    font-size: 14px;
+/*    color: #fb5c33;*/
+}
+
+p{
+    line-height: 30px;
+    font-size: 15px;
+}
+
+.clear{
+    clear: both;
+}
+
+#help-box{
+/*
+    float: right;
+    position: fixed;
+    right: 15px; 
+    top: 65px;
+*/
+}
+
+/*COLORS*/
+
+.green{
+    color: #71ae53;
+}
+
+.orange{
+    color: #fb5c33;
+}
+
+.grey{
+    color: #dedede;
+}
+
+/*LINKS*/
+
+ul li{
+    list-style: none;
+    line-height: 30px;
+}
+
+ul li a{
+    text-decoration: none;
+    color: inherit;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.active-link{
+    color: #fb5c33;
+    
+}
+
+#search-gear{
+    margin: 0;
+}
+
+a:hover{
+    color: #fb5c33;
+    cursor: pointer;
+}
+
+.button a{
+    text-decoration: none;
+}
+
+.capitalize{
+    text-transform: capitalize;
+}
+
+
+/*BUTTON*/
+
+.button{
+    background-color: #fb5c33;
+    width: 170px;
+    padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    font-family: "FuturaRegular";
+    text-transform: uppercase;
+    border: 2px solid #fb5c33;
+
+    
+}
+
+.button:hover{
+    background-color: transparent;
+    color: #fb5c33;
+    border: 2px solid #fb5c33;
+    cursor: pointer;
+}
+
+
+/*NAVIGATION*/
+
+#nav{
+    padding: 15px 30px;
+    font-size: 12px;
+/*    line-height: 100px;*/
+    height: 60px;
+/*    border-bottom: 1px solid #e1e1e1;*/
+}
+
+#nav:hover{
+    color: 
+}
+
+#search{
+    float: left;
+    margin-left: 5px;
+/*    outline: none;*/
+    border: none;
+    margin-top: 7px;
+    width: 180px;
+    margin-left: 20px;
+}
+
+::-webkit-input-placeholder {
+    color: #413847;
+    font-family: "Menlo Regular";
+    font-size: 12px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #413847;
+    font-family: "Menlo Regular";
+    font-size: 12px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    color: #413847;
+    font-family: "Menlo Regular";
+    font-size: 12px;
+}
+
+:-ms-input-placeholder {  
+    color: #413847;
+    font-family: "Menlo Regular";
+    font-size: 12px;
+}
+
+#search-icon{
+    float: left;
+    width: 23px;
+    margin-top: 4px;
+}
+
+#logo img{
+    width: 85px;
+    float: left;
+/*    position: absolute;*/
+}
+#nav ul{
+    float: right;
+}
+
+#nav li{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.padding-none{
+    padding-right: 0;
+}
+
+
+/*HAMBURGER NAV*/
+.hamburger-nav{
+    width: 35%;
+    background: #FB5C33;
+    height: 113%;
+    padding: 0;
+    display: none;
+    right: 0;
+    position: absolute;
+    display: none;
+    z-index: 555;
+}
+
+.hamburger-nav ul{
+    padding-top: 60px;
+}
+
+
+.display{
+     display: block;
+}
+
+.hamburger-nav li{
+    display: block;
+    color:white;
+/*    border-bottom: 1px solid white;*/
+    text-align: center;
+    font-size: 20px;
+    line-height: 60px;
+}
+
+.hamburger-nav li a:hover{
+    color: #413847;
+}
+
+.hamburger-nav-icon{
+    background: none;
+    outline: none;
+    border: none;
+    position: relative;
+/*    width: 22px;*/
+    height: 10px;
+    padding: 10px 10px;
+    box-sizing: content-box;
+    cursor: pointer;
+    float: right;
+/*    margin: 30px 40px;*/
+    display: none;
+    z-index: 666;
+}
+
+
+.hamburger-nav-icon::before, .hamburger-nav-icon::after {
+    content: '';
+    width: 22px;
+    height: 2px;
+    background: black;
+    display: block;
+    position: absolute;
+    border-radius: 1px;
+}
+.hamburger-nav-icon::before {
+    top: 10px;
+}
+.hamburger-nav-icon::after {
+    top: calc(100% - 12px);
+}
+
+.hamburger-nav-icon::before, .hamburger-nav-icon::after {
+    transition: transform 0.2s ease, top 0.2s ease 0.1s;
+}
+.hamburger-nav.open-icon::before, .hamburger-nav-icon.open::after {
+    transition: top 0.2s ease, transform 0.2s ease 0.1s;
+    top: calc(40% - 1px);
+}
+.hamburger-nav-icon.open::before {
+    transform: rotate(45deg);
+
+}
+.hamburger-nav-icon.open::after {
+    transform: rotate(-45deg);
+}
+
+
+                                /*HOME PAGE*/
+
+/*HERO IMAGE*/
+
+#hero-image{
+    background-image: url("../img/hero-image.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    height: 650px;
+/*    position: relative;*/
+    z-index: -2;
+}
+/*OVERLAY*/
+.overlay{
+     background-color: rgba(65,56,71, 0.5);
+    height: 100%;
+}
+
+/*HEADER*/
+
+.header-wrapper{
+    max-width: 1200px;
+    position: relative;
+    height: 100%;
+    margin: 0 auto;
+    
+}
+
+#header{
+    height: 70%;
+    width: 430px;
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    top: 0;
+
+    margin: auto;
+}
+
+#header h1{
+    line-height: 45px;
+    color: white;
+}
+
+#header .button{
+    float: right;
+    width: 190px;
+    padding: 10px;
+}
+
+
+#header-img img{
+    
+    width: 100%;
+}
+
+#header table{
+    padding-top: 30px;
+}
+
+#header td{
+    padding-top: 10px;
+    padding-left: 10px;
+    
+}
+
+#header table h3{
+    text-align: right;
+    color: white;
+}
+
+
+input, td{
+    font-size: 13px;
+/*
+    overflow:hidden;
+    display: inline-block;
+    width: 100%;
+*/
+}
+
+
+
+select, .dates{
+    -webkit-appearance: none; /*Removes default chrome and safari style*/
+    -moz-appearance: none; /* Removes Default Firefox style*/
+    width: 190px; /*Width of select dropdown to give space for arrow image*/
+    text-indent: 0.01px; 
+    /* Removes default arrow from firefox*/
+    text-overflow: "";  
+    /*Removes default arrow from firefox*/ /*My custom style for fonts*/
+    background: url("../img/arrow-dropdown.png");
+    background-repeat: no-repeat;
+/*    background-position: right center;*/
+    background-position: 94% 50%;
+    background-size: 10px 11px; 
+    border-radius: 0px;
+    padding: 10px;
+    font-family: "Menlo Regular";
+    border: 2px solid #e1e1e1;
+    background-color: transparent;
+    font-size: 13px;
+    text-align: left;
+/*    width: 100%;*/
+}
+
+#header select, #header .dates{
+    color: white;
+}
+
+.dates{
+/*    width: 130px;*/
+    padding: 7px;
+}
+
+.dates:focus{
+    border: 2px solid #fb5c33;
+    
+}
+
+*:focus{
+    outline: none;
+    outline: #fb5c33;
+}
+
+.province{
+    width: 60px;
+/*    width: 100%;*/
+    background-position: 80% 50%;
+}
+
+.city{
+    width: 122px;
+}
+
+.slider{
+    -webkit-appearance: none;
+    width: 100%;
+/*    border-radius: 8px;*/
+    height: 2px;
+/*    border: 1px solid 71ae53;*/
+    background-color: #71ae53; 
+}
+
+/*INTRODUCTION*/
+
+#introduction{
+    width: 80%;
+    margin: 0 auto;
+    color: #413847;
+    height: 100%;
+    clear: both;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    max-width: 600px;
+}
+#introduction h2{
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+/*HEADING*/
+
+.heading{
+    border-top: 1px dashed #413847;
+    clear: both;
+    position: absolute;
+    width: 100%;
+    left: -1px;
+}
+
+.heading h3{
+    position: relative;
+    left: 10%;
+    top:-13px;
+    background-color: white;
+    width: 180px;
+    text-align: center;
+}
+
+/*SECTIONS*/
+.centered{
+    text-align: center;
+}
+
+/*SECTION 1*/
+
+section{
+/*     max-width: 920px;*/
+    width: 95%;
+    padding-top: 70px;
+    padding-bottom: 70px;
+/*    text-align: center;*/
+    margin: 0 auto;
+/*
+    padding-left: 19%;
+    padding-right: 19%;
+*/
+}
+
+
+section h4{
+    
+    text-align: center;
+}
+
+section p{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.gear{
+    width: 32%;
+    max-width: 510px;
+    /* max-width: 210px; */
+    min-width: 210px;
+    min-height: 210px;
+    border: 1px solid #fb5c33;
+    border: 1px solid #e2e2e2;
+    /* height: 100%; */
+    display: inline-block;
+    /* cursor: pointer; */
+    background-size: cover;
+    border-bottom: 1px solid #fb5c33;
+    border-bottom: 1px solid #e2e2e2;
+    
+}
+
+.gear:hover{
+    color: #fb5b32;
+    border: 1px solid #fb5b32;
+}
+
+/*
+.hover{
+    border:1px solid #71ae58;
+    background-color: #71ae58;
+    color: white;
+}
+*/
+
+.park:hover{
+     border:1px solid #fb5b32;
+    color: #fb5b32;
+}
+.gear-img{
+height: 260px;
+    /* width: 100%; */
+    /* min-width: 210px; */
+    /* min-height: 210px; */
+    border-bottom: 1px solid #fb5c33;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+
+/*
+.gear{
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease; 
+    -o-transition: all 1s ease; 
+    transition: all 1s ease;
+}
+
+.gear:hover{
+    -webkit-transform:scale(1.05);
+    -moz-transform:scale(1.05); 
+    -ms-transform:scale(1.05); 
+    -o-transform:scale(1.05); 
+     transform:scale(1.05);
+}
+*/
+
+.gear-img-position{
+    background-size: cover;
+    background-position: center;
+}
+
+#gear-img-1{
+    background-image: url(../img/camping1.jpg);
+}
+
+#gear-img-2{
+    background-image: url(../img/camping2.jpg);
+}
+
+#gear-img-3{
+    background-image: url(../img/camping3.jpg);
+}
+
+#gear-img-4{
+    background-image: url(../img/camping4.jpg);
+}
+
+#gear-img-5{
+    background-image: url(../img/camping5.jpg);
+}
+
+#gear-img-6{
+    background-image: url(../img/camping6.jpg);
+}
+
+#gear-img-7{
+    background-image: url(../img/camping7.jpg);
+}
+
+#gear-img-8{
+    background-image: url(../img/camping8.jpg);
+}
+
+#gear-img-9{
+    background-image: url(../img/canoe-kayaking1.jpg);
+}
+
+#gear-img-10{
+    background-image: url(../img/canoe-kayaking2.jpg);
+}
+
+#gear-img-11{
+    background-image: url(../img/canoe-kayaking3.jpg);
+}
+
+#gear-img-12{
+    background-image: url(../img/canoe-kayaking4.jpg);
+}
+
+#gear-img-13{
+    background-image: url(../img/canoe-kayaking5.jpg);
+}
+
+#gear-img-14{
+    background-image: url(../img/canoe-kayaking6.jpg);
+}
+
+#gear-img-15{
+    background-image: url(../img/snow1.jpg);
+}
+
+#gear-img-16{
+    background-image: url(../img/snow2.jpg);
+}
+
+#gear-img-17{
+    background-image: url(../img/snow3.jpg);
+}
+
+#gear-img-18{
+    background-image: url(../img/snow4.jpg);
+}
+
+#gear-img-19{
+    background-image: url(../img/snow5.jpg);
+}
+
+#gear-img-20{
+    background-image: url(../img/snow6.jpg);
+}
+
+
+.price-week, .description{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+
+.description h4{
+    text-decoration: none;
+}
+
+.description p{
+    font-size: 10px;
+/*    text-decoration: underline;*/
+    padding-top: 20px;
+    text-align: center;
+
+}
+
+.price-week{
+    width: 36.4%;
+    float: left;
+    text-align: center;
+    border-right: 1px solid #fb5c33;
+    border-right: 1px solid #e2e2e2;
+}
+
+.product-description{
+    width: 63%;
+    float: right;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.price{
+    font-size: 25px;
+/*    color: #fb5c33;*/
+/*    color: #71ae53;*/
+}
+
+.week{
+    font-size: 9px;
+
+}
+
+/*SECTION 2*/
+
+
+.cta:hover{
+    border: 1px solid #fb5c33;
+    color: #fb5c33;
+}
+
+
+.cta img{
+/*   float: right;*/
+/*    margin-top: 16%;*/
+/*    margin-right: 50px;*/
+    width: 40%;
+    margin: 0 auto;
+}
+.blog,
+/*.survival-post,*/
+.cta{
+    width: 49.1%;
+/*    min-width: 300px;*/
+    border: 1px solid #fb5c33;
+    border: 1px solid #e2e2e2;
+    height: 100%;
+    display: inline-block;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.app-header{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 80px;
+    margin: auto;
+    height: 50%;
+    text-align: left;
+}
+
+.app-header h2{
+    padding-bottom: 30px;
+}
+
+
+.cta img{
+    width: 130px;
+}
+
+.survival-post{
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 48%;
+}
+
+
+.cta{
+     background-image: url(../img/campshare-app.jpg);
+    background-size: cover;
+    width: 100%;
+    height: 350px;
+    vertical-align: top;
+    display: inline-block;
+    background-position: right -60px;
+}
+
+.blog-img-thumb{
+     width: 100%;
+    height: 350px;
+    border-bottom: 1px solid #fb5c33;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.blog-img-thumb, .survival-post-img-thumb{
+
+    background-size: cover;
+    background-position: center;
+}
+
+.survival-post-img-thumb {
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.survival-post-img-thumb h1 {
+    height:100%;
+    display: table-cell;
+    vertical-align: middle;
+    background-color: rgba(65,56,71, 0.5);
+    color: #ffd036;
+}
+
+#survival-post-featured{
+    width: 31%;
+    height: 350px;
+}
+
+#survival-post-1, #survival-post-6{
+    height: 450px;
+}
+
+#survival-post-2, #survival-post-3, #survival-post-4, #survival-post-5{
+    height: 220px;
+}
+
+
+#survival-post-img-1{
+
+    background-image: url(../img/wildernessguide1.jpg);
+}
+
+#survival-post-img-2{
+
+    background-image: url(../img/wildernessguide2.jpg);
+}
+
+
+#survival-post-img-3{
+
+    background-image: url(../img/wildernessguide3.jpg);
+}
+
+#survival-post-img-4{
+
+    background-image: url(../img/wildernessguide4.jpg);
+}
+
+#blog-img-1{
+
+    background-image: url(../img/blog5.jpg);
+}
+
+#blog-img-2{
+    background-image: url(../img/blog2.jpg);
+}
+
+#blog-img-3{
+    background-image: url(../img/blog3.jpg);
+}
+
+#blog-img-4{
+    background-image: url(../img/blog4.jpg);
+}
+
+#blog-img-5{
+    background-image: url(../img/blog1.jpg);
+}
+
+
+
+/*SECTION 3*/
+
+
+.filter-activity, .filter-feature{
+    display: none;
+}
+
+#explore-button{
+    margin-top: 40px;
+}
+
+#park-info .button{
+    margin: 0;
+}
+
+.park{
+    border: 1px solid #dedede;
+    height: 100%;
+    display: inline-block;
+    cursor: pointer;
+    background-size: cover;
+/*    border-bottom: 1px solid #fb5c33;*/
+    margin-bottom: 10px;
+    vertical-align: top;
+}
+
+#park-1{
+    min-width: 254px;
+    width: 59%;
+}
+
+#park-2{
+    max-width: 500px;
+    width: 38.7%;
+}
+
+#park-3, #park-4, #park-5{
+    min-width: 150px;
+    width: 32%;
+}
+
+
+.park-name{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.park-name h5{
+    text-align: center;
+}
+
+.park-img{
+    height: 260px;
+    border-bottom: 1px solid #dedede;
+    background-size: cover;
+    background-position: center;
+}
+
+#park-img-1{
+    background-image: url(../img/banff.jpg);
+}
+
+#park-img-2{
+    background-image: url(../img/fraser.jpg);
+}
+
+#park-img-3{
+    background-image: url("../img/glacier.jpg");
+}
+
+#park-img-4{
+    background-image: url("../img/jasper.jpg");
+}
+
+#park-img-5{
+    background-image: url(../img/yukon.jpg);
+}
+
+#park-img-6{
+    background-image: url(../img/elk-island.jpg);
+}
+
+#park-img-7{
+    background-image: url(../img/waterton-lake.jpg);
+}
+
+#park-img-8{
+    background-image: url(../img/wood-buffalo.jpg);
+}
+
+#park-img-9{
+    background-image: url(../img/kootenay.jpg);
+}
+
+#park-img-10{
+    background-image: url(../img/mount-revelstoke.jpg);
+}
+
+#park-img-11{
+    background-image: url(../img/yoho.jpg);
+}
+
+#park-img-12{
+    background-image: url(../img/riding-mountain.jpg);
+}
+
+#park-img-13{
+    background-image: url(../img/wapusk.jpg);
+}
+
+/*ATTRACTIONS*/
+
+#attraction-img-1{
+    background-image: url(../img/Sulphur_Mountain_Banff.jpg)
+}
+
+#attraction-img-2{
+    background-image: url(../img/banff-national-park.jpg)
+}
+
+#attraction-img-3{
+    background-image: url(../img/lake_minnewanka.jpg)
+}
+
+#attraction-img-4{
+    background-image: url(../img/Bow_River.jpg)
+}
+
+.attraction{
+    border: 0px;
+    padding: 10px;
+    
+}
+
+.attraction p{
+    padding: 10px;
+}
+
+#park-7, #park-8{
+    width: 49%;
+}
+
+.attraction:hover{
+     border:0;
+    color: inherit;
+    cursor: auto;
+}
+                                /*FIND GEAR PAGE*/
+
+.filter-box{
+    float: left;
+    width: 300px;
+    height: 100px;
+    
+}
+
+#filter-box-wilderness-guide{
+   width: 230px; 
+}
+
+#filter-find-gear input, #filter-find-gear select{
+    width: 149px;   
+}
+
+.filters{
+     margin-left: 40px; 
+    position: fixed;
+    background: white;  
+}
+
+
+.filters li{
+    margin-left: 20px;
+    font-size: 10px;
+    display: block;
+}
+
+.filters p{
+    font-size: 13px;
+}
+
+.province-filter-name{
+    width: 50px;
+}
+
+.province-filter{
+    width: 150px
+}
+
+#aside-section{
+    width: 100%;
+    max-width: 1100px!important;
+    padding-top: 0px;
+    margin-bottom: 100px;
+}
+
+                                /*GEAR PAGE*/
+
+#products{
+    overflow: hidden;
+}
+#breadcrumbs li{
+    display: inline;
+    font-size: 12px;
+}
+#product-info{
+    float: left;
+    width: 65%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0px 20px;
+}
+
+.product-img{
+    width: 100%;
+    height: 350px; 
+}
+
+#gear-description{
+    float: left;
+    width: 25%;
+    position: fixed;
+}
+
+.description-box{
+    float: left;
+    width: 30%;
+    height: 100px;
+    padding: 30px 30px;
+}
+
+
+
+
+.filters table{
+    width: 100%;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+#gear-description h2{
+    color: #fb5c33;
+    margin-bottom: 20px;
+}
+
+#gear-description p{
+       margin-bottom: 10px;
+}
+
+#gear-description span{
+    font-family: "FuturaRegular";
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #fb5c33;
+}
+
+#gear-description .dates{
+    width: 135px;
+    font-size: 11px;
+}
+
+#gear-description .button{
+    margin: 0;
+    margin-top: 20px;
+}
+
+#owner-name{
+    float: left;
+    padding-left: 20px;
+}
+
+#owner-description{
+    padding-top: 10px;
+    margin-bottom: 30px;
+}
+
+#owner-description img{
+    width: 50px;
+    border-radius: 100%;
+    float: left;
+}
+
+#owner-description li{
+    list-style: none;
+}
+
+#owner-description p, #owner-description li{
+    font-size: 10px;
+}
+
+#report li{
+    float: right;
+    display: inline-block;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.stars-icon, .report-icons{
+    color: #fb5b32;
+    font-size: 15px;
+    padding-right: 5px;
+}
+
+.pick-up{
+    margin-right: 13px;
+}
+
+.mail-icon{
+    font-size: 25px;
+    color: #fb5b32;
+    line-height: 13px;
+    padding-right: 10px;
+    vertical-align: sub;
+}
+
+#tabs{
+    clear: both;
+}
+
+.tab{
+    width: 130px;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    width: 32.03%;
+}
+
+.active{
+    border-top: 1px solid #FB5C33; 
+    border-left: 1px solid #FB5C33; 
+    border-right: 1px solid #FB5C33;
+     border-bottom: 1px solid white;
+    z-index: 333;
+    
+}
+
+.tab-box p, .tab-box li{
+    font-size: 13px;
+    text-align: left;
+}
+
+.tab-box{
+    padding: 20px 40px;
+    border: 1px solid #FB5C33;
+    margin-bottom: 70px;
+    z-index: -17;
+    
+}
+
+.tab-box ul{
+    padding-top: 20px;
+}
+
+#similar-listings{
+    clear: both;
+    text-align: center;
+}
+
+#review-box{
+    background-color: #eaeaea;
+    width: 100%;
+    height: 200px;
+    position: relative;
+}
+
+#review-box textarea{
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 60%;
+    height: 190px;
+    float: left;
+    border: none;
+    overflow: auto;
+    outline: none;
+    background-color: #eaeaea;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    font-family: "Menlo Regular";
+}
+
+#review-box .button{
+    float: right;
+    bottom: 0;
+    right:0;
+    margin: 20px;
+    position: absolute;
+}
+
+.reviews img{
+    width: 50px;
+    border-radius: 100%;
+    float: left;   
+}
+
+.reviewer{
+    width: 100%;
+    display: table;
+}
+
+.reviewer p{
+    display: table-cell;
+    vertical-align: baseline;
+
+}
+
+.review-date{
+    text-align: right;
+}
+
+.review{
+    padding: 20px 0px;
+}
+
+.display-none{
+    display: none;
+}
+
+.display-block{
+    display: block;
+}
+
+                        /*EXPLORE CANAADA*/
+
+
+#aside-section .park{
+    width: 32%;
+}
+                        /*PARK PAGE*/
+
+#tags{
+    margin-top: 10px;
+    
+}
+.tag{
+    width: 150px;
+    width: 31%;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid #fb5b32;
+    margin-bottom: 10px; 
+    font-size: 12px;
+}
+
+#similar-parks .park{
+     width: 250px;
+    
+}
+
+#park-info{
+    padding-bottom: 100px;
+    max-width: 1100px;
+    padding: 20px;
+}
+
+#header-park{
+/*    height: 10%;*/
+     display: inline-block;
+    width: 45%;
+    padding-right: 5%;
+    float: left;
+}
+
+#header-park p{
+    padding-bottom: 20px;
+}
+.header-park-img{
+    float: left;
+    width: 55%;
+    height: 550px;
+/*     height: 100%;*/
+    display: inline-block;
+    vertical-align: top;
+    background-position: top;
+    background-size: cover;
+}
+
+
+.tag:hover{
+    background-color: #fb5b32;
+    color: white;
+}
+
+
+                    /*WILDERNESS GUIDE*/
+
+#aside-section .blog{
+    width: 250px;
+    
+}
+                            /*WILDERNESS GUIDE PAGE*/
+
+/*COMMUNITY*/
+
+#community h3{
+    padding: 40px 0;
+}
+
+                                    /*BLOGS*/
+
+#blog-section{
+    padding-top: 0;
+}
+
+#blog-section p{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#blog-section h2, #blog-section h5{
+    text-align: center;
+} 
+
+#blog-section h5{
+    font-weight: 100;
+    margin-bottom: 50px;
+    
+}
+
+#blog-section h2 a:hover{
+    color: inherit;
+}
+
+#blog-selection p{
+    padding-bottom: 0;
+}
+
+.blog p{
+    font-family: 15px;
+    padding-bottom: 0;
+}
+
+.blog:hover{
+    color: #f95b33;
+    border: 1px solid #f95b33;
+}
+                                    /*BLOG */
+
+.blog-img{
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+}
+
+
+#blog-section li{
+    display: inline-block;
+    margin-right: 30px;
+    font-size: 12px;
+}
+
+#blog-section ul{
+    padding-top: 40px;
+    
+}
+
+.page-num{
+   text-align: center;
+}
+
+
+
+#author{
+    text-align: center;
+}
+
+#author img{
+    border-radius: 100%;
+}
+
+article{
+    width:80%;
+    margin: 0 auto;
+}
+
+article h1{
+    padding-top: 40px;
+}
+
+.share-blog{
+    text-align: center;
+
+}
+
+.social-icons-blog {
+    text-align: center;
+    
+}
+
+.social-icons-blog{
+    padding-top: 0!important;
+    
+}
+
+/*MAP*/
+
+.map{
+    background-color: white;
+    
+}
+                                   /*FOOTER*/
+footer{
+    width: 100%;
+    background-color: #413847;
+    clear: both;
+    padding: 10%;
+    margin: 0 auto;
+}
+
+footer p, footer li{
+    font-size: 12px;
+    line-height: 30px;
+    color: white;
+}
+
+footer ul{
+     display: inline-block;
+    list-style: none;
+    padding-right: 7%;
+    vertical-align: top;
+}
+
+footer h5{
+    color: #fb5c33;
+    padding-bottom: 10px;
+}
+
+footer ul li{
+    display: block;
+}
+
+#meet-campshare{
+    width: 50%;
+}
+
+/*dropdown select*/
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.view-all{
+    display: block;
+}
+
+/*PLUS MINUS FILTER*/
+
+.plus-minus-toggle {
+  cursor: pointer;
+  height: 21px;
+  position: relative;
+  width: 21px;
+}
+.plus-minus-toggle:before,
+.plus-minus-toggle:after {
+  background: #000;
+  content: '';
+  height: 5px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 21px;
+  transition: transform 500ms ease;
+}
+.plus-minus-toggle:after {
+  transform-origin: center;
+}
+.plus-minus-toggle.collapsed:after {
+  transform: rotate(90deg);
+}
+.plus-minus-toggle.collapsed:before {
+  transform: rotate(180deg);
+}
+
+.plus-minus-toggle p{
+    float: right;
+    width: 40px;
+}
