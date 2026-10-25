@@ -36,7 +36,7 @@ export function ProjectPage({ slug }: { slug: string }) {
                 </figure>
                 {project.site ? (
                   <a className={home.link} href={project.site} target="_blank" rel="noreferrer">
-                    Visit site
+                    {project.siteLabel ?? 'Visit site'}
                   </a>
                 ) : null}
               </div>

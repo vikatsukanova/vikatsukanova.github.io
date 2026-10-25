@@ -3,6 +3,7 @@ export type Project = {
   label: string
   image: string
   site?: string
+  siteLabel?: string
   summary: string
   stack: readonly string[]
   features: readonly string[]
@@ -15,6 +16,8 @@ export const PROJECTS: readonly Project[] = [
     slug: 'clinical-interface',
     label: 'Clinical interface',
     image: '/work-clinical.svg?v=2',
+    site: 'https://vikatsukanova.github.io/clinical-dashboard-study/',
+    siteLabel: 'View the system',
     summary:
       'Clinical interface is a design system for a patient chart. The Storybook holds the tokens, the components, and two workflows: the dashboard and the assessment form. It is not a record from a job. The patient is fictional.',
     stack: ['React', 'TypeScript', 'Storybook', 'CSS', 'axe'],
