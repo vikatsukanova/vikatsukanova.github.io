@@ -12,6 +12,29 @@ export type Project = {
 
 export const PROJECTS: readonly Project[] = [
   {
+    slug: 'clinical-interface',
+    label: 'Clinical interface',
+    image: '/work-clinical.svg?v=2',
+    summary:
+      'Clinical interface is a design system for a patient chart. The Storybook holds the tokens, the components, and two workflows: the dashboard and the assessment form. It is not a record from a job. The patient is fictional.',
+    stack: ['React', 'TypeScript', 'Storybook', 'CSS', 'axe'],
+    features: [
+      'A wide screen shows three columns: the patient, the work of the visit, and the results. Below 1040px, one section shows at a time, and a bar switches among them.',
+      'Color follows the clinical result. LDL-C falling is good. eGFR falling is attention. A steady potassium stays neutral.',
+      'A chip names a fact. A status names where the assessment is. Each region has one primary button.',
+      'Lab values keep their units. The signed change is what gets read. The sparkline does not carry the meaning alone.',
+    ],
+    built: [
+      'React and TypeScript. Color, type, space, and radius are CSS variables.',
+      'Atomic design: atoms, molecules, organisms, one template, and two pages. The template owns the grid. The page owns the workflow.',
+      'Storybook documents each component. Every story runs axe, and a contrast or name failure fails the story.',
+    ],
+    demo: [
+      'Jordan Hale, 65. Cardiology. Shortness of breath on exertion. The referring clinician is Dr. Amira Cole.',
+      'Dashboard puts the timeline in the middle. Assessment puts the form there. Publish returns to the dashboard.',
+    ],
+  },
+  {
     slug: 'compass',
     label: 'Compass',
     image: '/work-compass.jpg?v=3',

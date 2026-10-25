@@ -224,6 +224,7 @@ function workFromProject(slug: string) {
 }
 
 const WORK = [
+  workFromProject('clinical-interface'),
   workFromProject('compass'),
   workFromProject('spendguard'),
   { label: 'Geargrid', image: '/work-geargrid.jpg?v=1' },
