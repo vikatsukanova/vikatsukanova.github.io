@@ -227,7 +227,7 @@ const WORK = [
   workFromProject('clinical-interface'),
   workFromProject('compass'),
   workFromProject('spendguard'),
-  { label: 'Geargrid', image: '/work-geargrid.jpg?v=1' },
+  // { label: 'Geargrid', image: '/work-geargrid.jpg?v=1' },
   workFromProject('fluenttrack'),
 ]
 
