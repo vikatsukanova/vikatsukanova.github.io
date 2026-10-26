@@ -22,10 +22,10 @@ export const PROJECTS: readonly Project[] = [
       'A design system for a patient chart. The Storybook holds the tokens, the components, and two workflows: the dashboard and the assessment form. It is not a record from a job. The patient is fictional.',
     stack: ['React', 'TypeScript', 'Storybook', 'CSS', 'axe'],
     features: [
-      'A wide screen shows three columns: the patient, the work of the visit, and the results. Below 1040px, one section shows at a time, and a bar switches among them.',
-      'Color follows the clinical result. LDL-C falling is good. eGFR falling is attention. A steady potassium stays neutral.',
-      'A chip names a fact. A status names where the assessment is. Each region has one primary button.',
-      'Lab values keep their units. The signed change is what gets read. The sparkline does not carry the meaning alone.',
+      'On a large screen the chart has three parts: who the patient is, what is happening in this visit, and the results. On a small screen you see one part at a time, and a bar at the bottom switches between them.',
+      'Color says whether the result is good, not whether the number went up. Cholesterol falling is good news. Kidney function falling needs a look. A potassium that stays steady stays quiet.',
+      'A small label names a fact, such as a diagnosis. A status says whether the note is still in progress or already published. Each part of the screen has one main action, so the next step is obvious.',
+      'A lab shows the number, the unit, and whether it rose or fell. The little chart underneath repeats that. You can understand the result without it.',
     ],
     built: [
       'React and TypeScript. Color, type, space, and radius are CSS variables.',
