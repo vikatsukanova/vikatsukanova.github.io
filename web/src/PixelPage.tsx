@@ -234,7 +234,7 @@ const WORK = [
 const LINKS = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/victoriatsukanova' },
   { name: 'GitHub', url: 'https://github.com/vikatsukanova' },
-  { name: 'Resume', url: 'https://www.linkedin.com/in/victoriatsukanova' },
+  { name: 'Resume', url: '/CV_Victoria_Tsukanova.pdf' },
   { name: 'Email', url: 'mailto:victoriatsukanova@gmail.com' },
 ]
 
@@ -337,7 +337,7 @@ export function PixelPage() {
                     <a
                       href={link.url}
                       className={styles.link}
-                      {...(link.url.startsWith('http')
+                      {...(link.url.startsWith('http') || link.url.endsWith('.pdf')
                         ? { target: '_blank', rel: 'noreferrer' }
                         : {})}
                     >
