@@ -217,13 +217,19 @@ const EDUCATION = [
   { program: 'Visual & Creative Arts', school: 'Sheridan College', dates: '2012 - 2014' },
 ] as const
 
-function workFromProject(slug: string) {
+type WorkCard = {
+  label: string
+  image: string
+  slug?: string
+}
+
+function workFromProject(slug: string): WorkCard {
   const project = PROJECTS.find((item) => item.slug === slug)
   if (!project) throw new Error(`Missing project: ${slug}`)
   return { label: project.label, image: project.image, slug: project.slug }
 }
 
-const WORK = [
+const WORK: WorkCard[] = [
   workFromProject('clinical-interface'),
   workFromProject('compass'),
   workFromProject('spendguard'),
@@ -421,7 +427,7 @@ export function PixelPage() {
                   </>
                 )
 
-                if ('slug' in item) {
+                if (item.slug) {
                   return (
                     <a key={item.label} className={styles.workCard} href={`/work/${item.slug}`}>
                       {card}
