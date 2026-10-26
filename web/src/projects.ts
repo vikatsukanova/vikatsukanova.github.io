@@ -15,7 +15,7 @@ export const PROJECTS: readonly Project[] = [
   {
     slug: 'clinical-interface',
     label: 'Design system of a clinical interface',
-    image: '/work-clinical.svg?v=2',
+    image: '/work-clinical.png?v=3',
     site: 'https://vikatsukanova.github.io/clinical-dashboard-study/',
     siteLabel: 'View the system',
     summary:
