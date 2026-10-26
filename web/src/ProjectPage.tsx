@@ -23,7 +23,9 @@ export function ProjectPage({ slug }: { slug: string }) {
         </a>
         {project ? (
           <>
-            <h1 className={styles.title}>{project.label}</h1>
+            <h1 className={project.label.length > 24 ? `${styles.title} ${styles.titleLong}` : styles.title}>
+              {project.label}
+            </h1>
             <div className={styles.layout}>
               <div className={styles.side}>
                 <ul className={styles.tags} aria-label="Stack">

@@ -55,6 +55,12 @@
   text-transform: uppercase;
 }
 
+.titleLong {
+  max-width: 19em;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -228,6 +234,10 @@
   .body,
   .list {
     text-align: center;
+  }
+
+  .titleLong {
+    margin-inline: auto;
   }
 
   .back {

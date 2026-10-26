@@ -14,12 +14,12 @@ export type Project = {
 export const PROJECTS: readonly Project[] = [
   {
     slug: 'clinical-interface',
-    label: 'Clinical interface',
+    label: 'Design system of a clinical interface',
     image: '/work-clinical.svg?v=2',
     site: 'https://vikatsukanova.github.io/clinical-dashboard-study/',
     siteLabel: 'View the system',
     summary:
-      'Clinical interface is a design system for a patient chart. The Storybook holds the tokens, the components, and two workflows: the dashboard and the assessment form. It is not a record from a job. The patient is fictional.',
+      'A design system for a patient chart. The Storybook holds the tokens, the components, and two workflows: the dashboard and the assessment form. It is not a record from a job. The patient is fictional.',
     stack: ['React', 'TypeScript', 'Storybook', 'CSS', 'axe'],
     features: [
       'A wide screen shows three columns: the patient, the work of the visit, and the results. Below 1040px, one section shows at a time, and a bar switches among them.',

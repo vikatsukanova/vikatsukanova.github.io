@@ -451,7 +451,9 @@ a.workCard:focus-visible {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
+  line-height: 1.5;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .stackMark {
