@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Victoria Tsukanova">
+  <circle cx="40" cy="40" r="38" fill="#d5e9b8" stroke="#1f3a15" stroke-width="2.5"/>
+  <text
+    x="40"
+    y="48"
+    text-anchor="middle"
+    font-family="Figtree, Avenir Next, Helvetica, sans-serif"
+    font-size="26"
+    font-weight="700"
+    letter-spacing="-0.04em"
+    fill="#1f3a15"
+  >VT</text>
+</svg>

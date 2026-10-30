@@ -1,8 +1,82 @@
+@font-face {
+  font-family: 'cormorantbook';
+  src:
+    url('/fonts/cormorant/cormorant-book-webfont.woff2') format('woff2'),
+    url('/fonts/cormorant/cormorant-book-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'bebas_neue_regularregular';
+  src:
+    url('/fonts/bebas/bebasneue_regular-webfont.woff2') format('woff2'),
+    url('/fonts/bebas/bebasneue_regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src:
+    url('/fonts/bebas/bebasneue_regular-webfont.woff2') format('woff2'),
+    url('/fonts/bebas/bebasneue_regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Roman';
+  src:
+    url('/fonts/Avenir-Roman-webfont.woff') format('woff'),
+    url('/fonts/Avenir-Roman-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'FuturaRegular';
+  src:
+    url('/fonts/futura/FuturaRegular.woff') format('woff'),
+    url('/fonts/futura/FuturaRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'open_sanslight';
+  src:
+    url('/fonts/open_sans/OpenSans-Light-webfont.woff') format('woff'),
+    url('/fonts/open_sans/OpenSans-Light-webfont.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'clear_sansregular';
+  src: url('/fonts/clear_sans/ClearSans-Regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
-  --bg: #f4f4f6;
-  --fg: #0000ff;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  --paper: #f8f7f2;
+  --ink: #252520;
+  --muted: #67675f;
+  --accent: #d9fa67;
+  --line: #d8d7ce;
+  --blue: #3156df;
+  --bg: var(--paper);
+  --fg: var(--ink);
+  font-family: 'DM Sans', Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,13 +90,14 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 1.5rem;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 #root {
@@ -38,8 +113,18 @@ img {
   display: block;
 }
 
+::selection {
+  background: #d8c7ff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
   }
 }

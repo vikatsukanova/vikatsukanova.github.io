@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#edf4f8">
+  <title>Cardiac assessment · Patient workspace</title>
+  <link rel="stylesheet" href="assessment.css?v=checkbox-align">
+  <script>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      if (params.get('embed') === '1') {
+        document.documentElement.classList.add('embed');
+        return;
+      }
+      const phase = params.get('phase') || params.get('step') || 'symptoms';
+      const next = new URL('workspace.html', location.href);
+      next.searchParams.set('assessment', phase);
+      const symptom = params.get('symptom');
+      if (symptom) next.searchParams.set('symptom', symptom);
+      location.replace(next.href);
+    })();
+  </script>
+  <script src="assessment.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to assessment</a>
+  <header class="topbar">
+    <a class="brand" href="workspace.html" aria-label="Patient workspace home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 17h8l3-10 5 19 3-11h7"/></svg><span>Patient workspace</span></a>
+    <nav class="primary-nav" aria-label="Main navigation"><a href="workspace.html#patients">Patients</a><a href="workspace.html#schedule">Schedule</a><a href="workspace.html#tasks">Tasks</a></nav>
+    <button class="profile-button" type="button" aria-label="Profile menu"><span>JD</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+  </header>
+  <main id="main" class="page-shell">
+    <div class="breadcrumbs"><a href="workspace.html">Patients</a><span aria-hidden="true">/</span><a href="workspace.html">Michael Smith</a><span aria-hidden="true">/</span><span>Cardiac assessment</span></div>
+    <a class="back-link" href="workspace.html">← Back to patient workspace</a>
+
+    <nav class="phase-rail" aria-label="Assessment phases">
+      <a href="?phase=symptoms" data-phase-link="symptoms"><span>1</span>Symptoms</a>
+      <a href="?phase=findings" data-phase-link="findings"><span>2</span>Findings</a>
+      <a href="?phase=plan" data-phase-link="plan"><span>3</span>Plan</a>
+      <a href="?phase=review" data-phase-link="review"><span>4</span>Review</a>
+    </nav>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="step-panel" data-panel="symptoms" aria-labelledby="symptoms-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow" id="symptomProgress">SYMPTOM 1 OF 2</p>
+          <h2 id="symptoms-title">Symptoms</h2>
+          <p class="intro">Add each symptom, then complete its details one at a time.</p>
+        </div>
+        <span class="draft-badge"><span aria-hidden="true">●</span> Draft</span>
+      </div>
+
+      <div class="symptom-layout">
+        <aside class="symptom-rail" aria-label="Symptoms in this assessment">
+          <div class="symptom-rail-head">
+            <h3>Symptoms</h3>
+            <p>Select a symptom to edit its details.</p>
+          </div>
+          <nav class="symptom-stepper" id="symptomStepper" aria-label="Symptoms"></nav>
+          <button type="button" class="outline-button add-symptom" id="addSymptom"><span aria-hidden="true">+</span>Add symptom</button>
+          <p class="rail-note" id="symptomSummary"></p>
+        </aside>
+
+        <div class="form-card symptom-detail">
+          <div class="symptom-detail-head">
+            <div>
+              <h3 id="activeSymptomTitle">Chest tightness</h3>
+              <p class="muted" id="activeSymptomMeta">Symptom 1 of 2</p>
+            </div>
+            <button type="button" class="text-button" id="removeSymptom">Remove</button>
+          </div>
+          <div class="field-grid">
+            <div class="field full">
+              <label for="symptomName">Symptom <span class="required">Required</span></label>
+              <select id="symptomName" required>
+                <option value="">Choose a symptom</option>
+                <option>Chest tightness</option>
+                <option>Chest discomfort</option>
+                <option>Shortness of breath</option>
+                <option>Palpitations</option>
+                <option>Dizziness</option>
+                <option>Fatigue</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <fieldset class="field">
+              <legend>When did it begin? <span class="required">Required</span></legend>
+              <div class="inline-input">
+                <label class="choice"><input type="radio" name="onsetKnown" value="known" checked><span>Known</span></label>
+                <label class="choice"><input type="radio" name="onsetKnown" value="unknown"><span>Unknown</span></label>
+              </div>
+              <label class="sr-only" for="onsetDate">Onset date</label>
+              <input id="onsetDate" type="date" value="">
+            </fieldset>
+            <fieldset class="field">
+              <legend>How often? <span class="required">Required</span></legend>
+              <div class="inline-input">
+                <label class="choice"><input type="radio" name="frequencyKnown" value="known" checked><span>Recorded</span></label>
+                <label class="choice"><input type="radio" name="frequencyKnown" value="unknown"><span>Unknown</span></label>
+              </div>
+              <label class="sr-only" for="frequency">Frequency description</label>
+              <input id="frequency" type="text" value="" placeholder="For example, intermittent">
+            </fieldset>
+            <div class="field">
+              <label for="duration">Episode duration <span class="required">Required</span></label>
+              <div class="input-suffix"><input id="duration" type="number" min="0" value="" aria-describedby="duration-unit"><span id="duration-unit">minutes</span></div>
+              <label class="choice unknown-choice"><input type="checkbox" id="durationUnknown"><span>Duration unknown</span></label>
+            </div>
+            <div class="field">
+              <label for="context">Context</label>
+              <select id="context">
+                <option value="">Not recorded</option>
+                <option>With activity</option>
+                <option>At rest</option>
+                <option>When lying down</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="description">Patient description <span class="required">Required</span></label>
+              <textarea id="description" rows="4" required placeholder="Describe the symptom in the patient’s own words…"></textarea>
+              <p class="field-help">Use the patient’s words where possible.</p>
+            </div>
+            <div class="field full">
+              <label for="symptomNotes">Additional notes <span class="optional">Optional</span></label>
+              <textarea id="symptomNotes" rows="3" placeholder="Add relevant context or observations…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step-panel" data-panel="findings" aria-labelledby="findings-title" hidden>
+      <div class="section-heading"><div><p class="eyebrow">PHASE 2 OF 4</p><h2 id="findings-title">Findings</h2><p class="intro">Record observations and review the sample results shown with their dates and units.</p></div><span class="draft-badge"><span aria-hidden="true">●</span> Draft</span></div>
+      <div class="findings-layout">
+        <div class="form-card">
+          <h3>Examination</h3><p class="card-intro">Sample values are fictional and are provided to demonstrate the interface.</p>
+          <div class="field-grid">
+            <fieldset class="field"><legend>Blood pressure <span class="required">Required</span></legend><div class="input-suffix dual"><label class="sr-only" for="systolic">Systolic pressure</label><input id="systolic" type="number" min="0" value="128"><span>/</span><label class="sr-only" for="diastolic">Diastolic pressure</label><input id="diastolic" type="number" min="0" value="76"><span>mmHg</span></div><label class="choice unknown-choice"><input type="checkbox" id="bpUnknown"><span>Not recorded / unknown</span></label></fieldset>
+            <div class="field"><label for="heartRate">Heart rate <span class="required">Required</span></label><div class="input-suffix"><input id="heartRate" type="number" min="0" value="78"><span>bpm</span></div><label class="choice unknown-choice"><input type="checkbox" id="heartRateUnknown"><span>Not recorded / unknown</span></label></div>
+            <div class="field"><label for="examNote">Examination note <span class="optional">Optional</span></label><textarea id="examNote" rows="3">Regular rhythm noted in this fictional sample.</textarea></div>
+            <fieldset class="field"><legend>Additional findings</legend><label class="choice"><input type="checkbox" name="finding" value="ECG reviewed" checked><span>ECG reviewed</span></label><label class="choice"><input type="checkbox" name="finding" value="Imaging reviewed"><span>Imaging reviewed</span></label><label class="choice"><input type="checkbox" name="finding" value="No additional findings"><span>No additional findings</span></label></fieldset>
+          </div>
+        </div>
+        <aside class="results-card" aria-labelledby="results-title">
+          <div class="results-heading"><div><p class="eyebrow">SUPPORTING RESULTS</p><h3 id="results-title">Illustrative lab trends</h3></div><span class="sample-pill">SAMPLE</span></div>
+          <p class="results-note">Fictional demonstration data only · 2021</p>
+          <div class="chart-block"><h4>LDL cholesterol <span>(mmol/L)</span></h4>
+            <svg class="chart" viewBox="0 0 420 150" aria-hidden="true" focusable="false"><path class="gridline" d="M46 24H400M46 68H400M46 112H400"/><text x="8" y="28">2.0</text><text x="8" y="72">1.5</text><text x="8" y="116">1.0</text><path class="trend" d="M70 32.8L220 59.2L370 76.8"/><circle class="point" cx="70" cy="32.8" r="5"/><circle class="point" cx="220" cy="59.2" r="5"/><circle class="point" cx="370" cy="76.8" r="5"/><text x="70" y="19" text-anchor="middle">1.9</text><text x="220" y="46" text-anchor="middle">1.6</text><text x="370" y="63" text-anchor="middle">1.4</text><text x="70" y="140" text-anchor="middle">Feb 8</text><text x="220" y="140" text-anchor="middle">Apr 8</text><text x="370" y="140" text-anchor="middle">Jun 8</text></svg>
+            <table><caption>LDL cholesterol · illustrative values</caption><thead><tr><th scope="col">Date</th><th scope="col">Value</th><th scope="col">Unit</th></tr></thead><tbody><tr><td>8 Feb 2021</td><td>1.9</td><td>mmol/L</td></tr><tr><td>8 Apr 2021</td><td>1.6</td><td>mmol/L</td></tr><tr><td>8 Jun 2021</td><td>1.4</td><td>mmol/L</td></tr></tbody></table>
+          </div>
+          <div class="chart-block"><h4>HbA1c <span>(%)</span></h4>
+            <svg class="chart" viewBox="0 0 420 150" aria-hidden="true" focusable="false"><path class="gridline" d="M46 24H400M46 68H400M46 112H400"/><text x="8" y="28">6.6</text><text x="8" y="72">6.2</text><text x="8" y="116">5.8</text><path class="trend" d="M70 46L220 68L370 90"/><circle class="point" cx="70" cy="46" r="5"/><circle class="point" cx="220" cy="68" r="5"/><circle class="point" cx="370" cy="90" r="5"/><text x="70" y="32" text-anchor="middle">6.4</text><text x="220" y="54" text-anchor="middle">6.2</text><text x="370" y="76" text-anchor="middle">6.0</text><text x="70" y="140" text-anchor="middle">Feb 8</text><text x="220" y="140" text-anchor="middle">Apr 8</text><text x="370" y="140" text-anchor="middle">Jun 8</text></svg>
+            <table><caption>HbA1c · illustrative values</caption><thead><tr><th scope="col">Date</th><th scope="col">Value</th><th scope="col">Unit</th></tr></thead><tbody><tr><td>8 Feb 2021</td><td>6.4</td><td>%</td></tr><tr><td>8 Apr 2021</td><td>6.2</td><td>%</td></tr><tr><td>8 Jun 2021</td><td>6.0</td><td>%</td></tr></tbody></table>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="step-panel" data-panel="plan" aria-labelledby="plan-title" hidden>
+      <div class="section-heading"><div><p class="eyebrow">PHASE 3 OF 4</p><h2 id="plan-title">Plan</h2><p class="intro">Use this space for documentation in the sample assessment.</p></div><span class="draft-badge"><span aria-hidden="true">●</span> Draft</span></div>
+      <div class="form-card plan-card"><div class="documentation-note"><span aria-hidden="true">i</span><p>This is a documentation field for the prototype. It does not provide treatment guidance or clinical recommendations.</p></div><div class="field"><label for="planNotes">Plan documentation <span class="required">Required</span></label><textarea id="planNotes" rows="8" required>Discussed the patient’s reported episodes and documented the sample findings for follow-up review.</textarea><p class="field-help">Record the documented discussion or next steps in your own words.</p></div><div class="field"><label for="followUp">Follow-up note <span class="optional">Optional</span></label><input id="followUp" type="text" value="Review at next scheduled appointment" placeholder="Add a documentation note"></div></div>
+    </section>
+
+    <section class="step-panel" data-panel="review" aria-labelledby="review-title" hidden>
+      <div class="section-heading"><div><p class="eyebrow">PHASE 4 OF 4</p><h2 id="review-title">Review assessment</h2><p class="intro">Check the details entered in this browser draft.</p></div><span class="draft-badge"><span aria-hidden="true">●</span> Draft</span></div>
+      <div class="review-stack" id="reviewContent"></div>
+      <div class="completion-note"><strong>Prototype only.</strong> Finishing shows a demo completion state. No clinical record is created or sent.</div>
+      <div id="successPanel" class="success-panel" role="status" hidden><span aria-hidden="true">✓</span><div><strong>Demo assessment complete</strong><p>This fictional draft was completed in the prototype. No clinical record was created.</p></div></div>
+    </section>
+
+    <footer class="form-footer">
+      <div class="footer-actions">
+        <button type="button" class="button secondary" id="backButton">Back</button>
+        <button type="button" class="button primary" id="nextButton">Continue <span aria-hidden="true">→</span></button>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

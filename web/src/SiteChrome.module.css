@@ -1,0 +1,87 @@
+.shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem) 0.75rem;
+  max-width: 72rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  transition: transform 0.25s ease;
+}
+
+.logo img {
+  display: block;
+  width: 85px;
+  height: auto;
+}
+
+.logo:hover,
+.logo:focus-visible {
+  transform: scale(1.04);
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.nav a {
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.nav a:hover,
+.nav a:focus-visible,
+.active {
+  color: var(--ink) !important;
+  font-weight: 700;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 4rem clamp(1.25rem, 4vw, 3.5rem) 3rem;
+  text-align: center;
+}
+
+.footerTitle {
+  margin: 0 0 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  gap: 1.35rem;
+  color: var(--ink);
+}
+
+.social a {
+  display: grid;
+  place-items: center;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.social a:hover,
+.social a:focus-visible {
+  opacity: 1;
+  transform: translateY(-2px);
+}

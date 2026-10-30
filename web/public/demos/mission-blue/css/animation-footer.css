@@ -1,0 +1,639 @@
+/*ANIMATION CAROUSEL*/
+
+/*CRAB*/
+
+#seahorse1, #seahorse3, #seahorse5{
+    -webkit-animation: crab 20s ease-in-out infinite;
+  -moz-animation: crab 20s ease-in-out infinite;
+  -o-animation: crab 20s ease-in-out infinite;
+  animation: crab 20s ease-in-out infinite;
+}
+
+@-webkit-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+
+}
+
+
+#seahorse2, #seahorse4, #seahorse6{
+
+  -webkit-animation: turtle 25s ease-in-out infinite;
+  -moz-animation: turtle 25s ease-in-out infinite;
+  -o-animation: turtle 25s ease-in-out infinite;
+  animation: turtle 25s ease-in-out infinite;
+}
+
+@-webkit-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@keyframes turtle {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+
+}
+
+
+
+
+
+
+/*-----------------------ANIMATION FOOTER--------------------------*/
+
+/*CRAB*/
+
+#crab{
+    -webkit-animation: crab 20s ease-in-out infinite;
+  -moz-animation: crab 20s ease-in-out infinite;
+  -o-animation: crab 20s ease-in-out infinite;
+  animation: crab 20s ease-in-out infinite;
+}
+
+@-webkit-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@keyframes crab {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+
+}
+
+/*TURTLE*/
+
+#turtle{
+
+  -webkit-animation: turtle 25s ease-in-out infinite;
+  -moz-animation: turtle 25s ease-in-out infinite;
+  -o-animation: turtle 25s ease-in-out infinite;
+  animation: turtle 25s ease-in-out infinite;
+}
+
+@-webkit-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes turtle {
+  0% {
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@keyframes turtle {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+
+}
+
+
+/*DOLPHIN*/
+
+#dolphin{
+
+  -webkit-animation: dolphin 20s ease-in-out infinite;
+  -moz-animation: dolphin 20s ease-in-out infinite;
+  -o-animation: dolphin 20s ease-in-out infinite;
+  animation: dolphin 20s ease-in-out infinite;
+}
+
+@-webkit-keyframes dolphin {
+  0% {
+
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 35px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 35px);
+
+  }
+
+  100% {
+
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes dolphin {
+  0% {
+
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 35px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 35px);
+
+  }
+
+  100% {
+
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes dolphin {
+  0% {
+
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 35px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 35px);
+
+  }
+
+  100% {
+
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+}
+@keyframes dolphin {
+  0% {
+
+    transform:rotate(-10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(5deg) translate(0px, 35px);
+  }
+
+  50%{
+    transform:rotate(-5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(5deg) translate(0px, 35px);
+
+  }
+
+  100% {
+
+    transform:rotate(-5deg) translate(0px, 0px);
+  }
+
+}
+
+
+/*JELLYFISH*/
+
+#jellyfish{
+
+  -webkit-animation: jellyfish 25s ease-in-out infinite;
+  -moz-animation: jellyfish 25s ease-in-out infinite;
+  -o-animation: jellyfish 25s ease-in-out infinite;
+  animation: jellyfish 25s ease-in-out infinite;
+}
+
+@-webkit-keyframes jellyfish {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+}
+@-moz-keyframes jellyfish {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+}
+@-o-keyframes jellyfish {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+}
+@keyframes jellyfish {
+  0% {
+    transform:rotate(10deg) translate(0px, 0px);
+  }
+  25%{
+
+    transform:rotate(-10deg) translate(0px, 55px);
+  }
+
+  50%{
+    transform:rotate(5deg) translate(0px, 0px);
+
+  }
+
+  75%{
+    transform:rotate(-5deg) translate(0px, 55px);
+
+  }
+
+  100% {
+    transform:rotate(5deg) translate(0px, 0px);
+  }
+
+}

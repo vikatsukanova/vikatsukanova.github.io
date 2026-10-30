@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardiology Dashboard — Vika Tsukanova</title>
+  <meta name="description" content="Cardiology dashboard product design case study: keeping patient context in view across history, assessments, and clinical results.">
+  <link rel="stylesheet" href="case.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <main id="main">
+    <section class="hero">
+      <a class="back" href="/">← Home</a>
+      <div class="eyebrow">Cardiology Dashboard · Product Design</div>
+      <div class="heroline">
+        <div class="hero-copy">
+          <h1>Keeping patient<br><em>context</em><br>in view</h1>
+          <p class="intro">A cardiology workspace that brings patient history, assessments, and clinical results together to support a connected assessment experience.</p>
+          <dl class="meta">
+            <div>
+              <dt>Role</dt>
+              <dd>Product design · UX/UI · MVP definition</dd>
+            </div>
+            <div>
+              <dt>Collaborators</dt>
+              <dd>Cardiologist · Cofounders · Machine learning engineer</dd>
+            </div>
+          </dl>
+        </div>
+        <figure class="hero-shot">
+          <button type="button" class="expand-shot" data-expand aria-label="Expand patient workspace screenshot">
+            <img src="assets/rendered/workspace.png?v=5" alt="Three-column cardiology dashboard with patient context, assessment history, and clinical results">
+          </button>
+        </figure>
+      </div>
+    </section>
+
+    <div class="context-preface">
+      <span class="eyebrow">Preface</span>
+      <p class="context-intro">I designed the dashboard from scratch, working closely with a cardiologist to shape the UX and UI around real clinical workflows. Alongside the cofounders and a machine learning engineer, I helped define the MVP, balancing clinical needs and design goals with what the backend and ML-driven insights could realistically support.</p>
+    </div>
+
+    <div class="case-layout">
+    <nav class="chapter-nav" aria-label="Case study chapters">
+      <a href="#overview">01 Challenge</a>
+      <a href="#workspace">02 Workspace</a>
+      <a href="#workflow">03 Journey</a>
+      <a href="#screens">04 Interface</a>
+      <a href="#system">05 Consistency</a>
+      <a href="#next">06 Outcome</a>
+    </nav>
+
+    <div class="case-content">
+    <section class="section" id="overview">
+      <div class="split">
+        <div>
+          <span class="eyebrow">01 / The challenge</span>
+          <h2>Bringing clinical information into a usable workspace</h2>
+        </div>
+        <div>
+          <p class="lead">During an assessment, clinicians need to connect the patient’s history with current findings and previous assessments. The design challenge was to make this information easy to reference while keeping the task at hand clear.</p>
+          <p>Working closely with the cardiologist helped me understand the relationships between that information and the workflow it needed to support. Those discussions informed how I organized the dashboard and presented its actions.</p>
+          <p>At the same time, I worked with the founding and engineering team to narrow the MVP to its essentials. This meant aligning the experience we wanted to create with the data and capabilities available to support it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workspace">
+      <div class="split">
+        <div>
+          <span class="eyebrow">02 / The workspace</span>
+          <h2>Three connected views of the patient</h2>
+        </div>
+        <div>
+          <p class="lead">I organized the dashboard into three areas, giving each type of information a clear place within the assessment workspace.</p>
+          <p>The structure is designed to help clinicians orient themselves: whose record they are reviewing, what has already been documented, and where to continue.</p>
+        </div>
+      </div>
+
+      <div class="principles">
+        <article>
+          <b>01 / Patient context</b>
+          <h3>Always available</h3>
+          <p>Patient details, history, risk factors, medications, and allergies remain available for reference.</p>
+        </article>
+        <article>
+          <b>02 / Assessment history</b>
+          <h3>Drafts and published</h3>
+          <p>Assessments are grouped by diagnosis, with clear distinctions between drafts and published assessments so clinicians can find previous work or pick up an unfinished assessment.</p>
+        </article>
+        <article>
+          <b>03 / Supporting results</b>
+          <h3>Within reach</h3>
+          <p>Examination findings and test results sit alongside the assessment, keeping relevant information within reach.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="split">
+        <div>
+          <span class="eyebrow">03 / The assessment journey</span>
+          <h2>From documenting symptoms to reviewing the plan</h2>
+        </div>
+        <div>
+          <p class="lead">To explore how the dashboard could support the full assessment task, I developed a proposed four-step flow: Symptoms, Findings, Plan, and Review.</p>
+          <p>The prototype allows clinicians to start an assessment, return to a draft, and revisit earlier steps. Patient context stays visible throughout, while each step focuses on a distinct part of the task.</p>
+        </div>
+      </div>
+
+      <figure class="figure flow-diagram">
+        <div class="figure-stage">
+          <button type="button" class="expand-shot" data-expand aria-label="Expand assessment flow diagram">
+            <img src="assets/rendered/assessment-flow.png?v=1" alt="Assessment flow: open patient workspace, resume or start, then symptoms, findings, plan, and review" loading="lazy">
+          </button>
+        </div>
+        <figcaption class="caption">Proposed assessment flow — start or resume from the workspace, then move through symptoms, findings, plan, and review.</figcaption>
+      </figure>
+
+      <div class="wiregrid">
+        <article class="wirecard">
+          <div class="wirelabel"><span>01 / SYMPTOMS</span><span>CONCEPT</span></div>
+          <div class="wire" role="img" aria-label="Symptoms wireframe: patient context, progress, fields, next action">
+            <div class="wbar"><i></i><i></i><i></i></div>
+            <div class="wpatient"><span class="avatar"></span>Patient context / always in view</div>
+            <div class="wbody">
+              <aside class="wside">Summary<div class="wfield">History</div><div class="wfield">Results</div></aside>
+              <div class="wmain">
+                <div class="wsteps"><i class="active"></i><i></i><i></i><i></i></div>
+                <b>Symptoms</b>
+                <div class="wfield">Search symptoms</div>
+                <div class="wfield">Selected symptom</div>
+                <div class="wfield">Onset · Pattern · Context</div>
+                <div class="wbutton"><span>Continue →</span></div>
+              </div>
+            </div>
+          </div>
+          <h3>Symptoms — Keep entries and details together</h3>
+          <p>A persistent symptom list lets clinicians move between entries without losing their place.</p>
+        </article>
+        <article class="wirecard">
+          <div class="wirelabel"><span>02 / FINDINGS</span><span>CONCEPT</span></div>
+          <div class="wire" role="img" aria-label="Findings wireframe: patient context, progress, fields, next action">
+            <div class="wbar"><i></i><i></i><i></i></div>
+            <div class="wpatient"><span class="avatar"></span>Patient context / always in view</div>
+            <div class="wbody">
+              <aside class="wside">Summary<div class="wfield">History</div><div class="wfield">Results</div></aside>
+              <div class="wmain">
+                <div class="wsteps"><i></i><i class="active"></i><i></i><i></i></div>
+                <b>Findings</b>
+                <div class="wfield">Examination</div>
+                <div class="wfield">Supporting results</div>
+                <div class="wfield">Observations</div>
+                <div class="wbutton"><span>Continue →</span></div>
+              </div>
+            </div>
+          </div>
+          <h3>Findings — Connect observations with supporting results</h3>
+          <p>Examination notes and relevant results appear together, supporting review within the assessment.</p>
+        </article>
+        <article class="wirecard">
+          <div class="wirelabel"><span>03 / PLAN</span><span>CONCEPT</span></div>
+          <div class="wire" role="img" aria-label="Plan wireframe: patient context, progress, fields, next action">
+            <div class="wbar"><i></i><i></i><i></i></div>
+            <div class="wpatient"><span class="avatar"></span>Patient context / always in view</div>
+            <div class="wbody">
+              <aside class="wside">Summary<div class="wfield">History</div><div class="wfield">Results</div></aside>
+              <div class="wmain">
+                <div class="wsteps"><i></i><i></i><i class="active"></i><i></i></div>
+                <b>Plan</b>
+                <div class="wfield">Recommendations</div>
+                <div class="wfield">Follow-up</div>
+                <div class="wfield">Additional notes</div>
+                <div class="wbutton"><span>Continue →</span></div>
+              </div>
+            </div>
+          </div>
+          <h3>Plan — Give next steps a dedicated space</h3>
+          <p>The care plan and follow-up are organized into a focused step, connected to the information documented earlier.</p>
+        </article>
+        <article class="wirecard">
+          <div class="wirelabel"><span>04 / REVIEW</span><span>CONCEPT</span></div>
+          <div class="wire" role="img" aria-label="Review wireframe: patient context, progress, fields, complete action">
+            <div class="wbar"><i></i><i></i><i></i></div>
+            <div class="wpatient"><span class="avatar"></span>Patient context / always in view</div>
+            <div class="wbody">
+              <aside class="wside">Summary<div class="wfield">History</div><div class="wfield">Results</div></aside>
+              <div class="wmain">
+                <div class="wsteps"><i></i><i></i><i></i><i class="active"></i></div>
+                <b>Review</b>
+                <div class="wfield">Symptoms summary</div>
+                <div class="wfield">Findings &amp; plan</div>
+                <div class="wfield">Gaps before completion</div>
+                <div class="wbutton"><span>Complete →</span></div>
+              </div>
+            </div>
+          </div>
+          <h3>Review — Check the assessment as a whole</h3>
+          <p>A consolidated summary brings the entries together and highlights missing details before completion.</p>
+        </article>
+      </div>
+
+      <div class="wire-cta">
+        <div>
+          <span class="wire-kicker">Explore the prototype</span>
+          <h3>Try the assessment flow</h3>
+          <p>Walk through the assessment to see how navigation, draft status, and review prompts work together.</p>
+        </div>
+        <a class="wire-next" href="assessment.html?step=symptoms">Try the assessment flow ↗</a>
+      </div>
+    </section>
+
+    <section class="section" id="screens">
+      <div class="split">
+        <div>
+          <span class="eyebrow">04 / Interface decisions</span>
+          <h2>A clear hierarchy for a detailed task</h2>
+        </div>
+        <p class="lead">The interface needs to accommodate substantial information while making the current task easy to identify. I used consistent grouping, readable labels, and restrained color to establish a clear hierarchy.</p>
+      </div>
+
+      <div class="principles principles-4">
+        <article>
+          <b>Keep context available</b>
+          <h3>Predictable reference</h3>
+          <p>Patient information remains in a predictable location, providing a reference point as the assessment progresses.</p>
+        </article>
+        <article>
+          <b>Make the next action clear</b>
+          <h3>Focused steps</h3>
+          <p>Section headings and primary actions give each step a clear focus. Supporting details remain accessible without competing for the same attention.</p>
+        </article>
+        <article>
+          <b>Make progress visible</b>
+          <h3>Status in words</h3>
+          <p>Labels such as “Draft,” “Saved,” and “Needs details” communicate the state of the work and help clinicians understand where to continue.</p>
+        </article>
+        <article>
+          <b>Use color with purpose</b>
+          <h3>Status ≠ clinical meaning</h3>
+          <p>Blue accents indicate selection and interaction. Workflow status is distinguished from clinical meaning, with text labels providing context rather than relying on color alone.</p>
+        </article>
+      </div>
+
+      <div class="screen-grid">
+        <figure class="figure">
+          <div class="figure-stage blue">
+            <button type="button" class="expand-shot" data-expand aria-label="Expand Symptoms screenshot">
+              <img src="assets/rendered/form.png?v=5" alt="Symptoms step: list on left, details on right" loading="lazy">
+            </button>
+          </div>
+          <figcaption class="caption">Symptoms — entries and details stay together.</figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-stage">
+            <button type="button" class="expand-shot" data-expand aria-label="Expand Findings screenshot">
+              <img src="assets/rendered/findings.png?v=5" alt="Findings step with examination fields and LDL trend chart" loading="lazy">
+            </button>
+          </div>
+          <figcaption class="caption">Findings — observations with supporting results.</figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-stage blue">
+            <button type="button" class="expand-shot" data-expand aria-label="Expand Plan screenshot">
+              <img src="assets/rendered/plan.png?v=5" alt="Plan step with documentation and optional follow-up" loading="lazy">
+            </button>
+          </div>
+          <figcaption class="caption">Plan — next steps in a dedicated space.</figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-stage">
+            <button type="button" class="expand-shot" data-expand aria-label="Expand Review screenshot">
+              <img src="assets/rendered/review.png?v=5" alt="Review step summarizing symptoms before completion" loading="lazy">
+            </button>
+          </div>
+          <figcaption class="caption">Review — the assessment checked as a whole.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="system">
+      <div class="split">
+        <div>
+          <span class="eyebrow">05 / Consistency and accessibility</span>
+          <h2>Familiar interactions throughout the experience</h2>
+        </div>
+        <div>
+          <p class="lead">Consistent cards, controls, and navigation patterns connect the dashboard and assessment flow. Repeated elements behave and appear similarly, reducing the need to interpret a new interface at each step.</p>
+          <p>Readable labels, visible keyboard focus, and a logical navigation order support interaction throughout the prototype. Status is communicated through words as well as color.</p>
+          <p>These patterns also form a reusable component library to support consistency as the product develops.</p>
+        </div>
+      </div>
+      <div class="systemboard">
+        <article class="systemcard">
+          <span class="eyebrow">Color with purpose</span>
+          <div class="swatches">
+            <div><i style="background:#bd3f42"></i>Critical</div>
+            <div><i style="background:#a96c13"></i>Warning</div>
+            <div><i style="background:#198155"></i>Stable</div>
+          </div>
+          <p>Workflow status is distinguished from clinical meaning, with text labels providing context.</p>
+        </article>
+        <article class="systemcard">
+          <span class="eyebrow">Readable hierarchy</span>
+          <div class="types">Patient workspace<br><span style="font-size:25px">Cardiac assessment</span><br><span style="font-size:15px;letter-spacing:0">Clear labels. Readable details.</span></div>
+          <p>Stronger headings and darker labels distinguish patient details, assessment sections, and supporting information.</p>
+        </article>
+        <article class="systemcard">
+          <span class="eyebrow">Status in words</span>
+          <div class="chips"><span>✓ Saved</span><span>Draft</span><span>Needs details</span></div>
+          <h3>Words, not just color</h3>
+          <p>Labels such as “Draft,” “Saved,” and “Needs details” make progress visible without relying on color alone.</p>
+        </article>
+        <article class="systemcard">
+          <span class="eyebrow">Everyday interaction</span>
+          <h3 style="margin-top:25px">In the details</h3>
+          <p>Visible keyboard focus, labeled controls, and a logical navigation order support interaction across the flow. Accessibility conformance has not been established.</p>
+        </article>
+      </div>
+      <a class="linkbutton" href="https://vikatsukanova.github.io/clinical-dashboard-study/?path=/docs/introduction--docs" target="_blank" rel="noopener">Explore the component library ↗</a>
+    </section>
+
+    <section class="section" id="next">
+      <div class="split">
+        <div>
+          <span class="eyebrow">06 / Outcome and next steps</span>
+          <h2>From clinical workflow to a tangible product experience</h2>
+        </div>
+        <div>
+          <p class="lead">The work translated discussions with a cardiologist into a dashboard designed around patient context, assessment history, and supporting results. Collaboration with the cofounders and machine learning engineer helped keep the MVP grounded in what the team could deliver.</p>
+          <p>The accompanying assessment prototype explores how that workspace could extend into a connected documentation and review flow.</p>
+          <p>The next step is to evaluate the experience with clinicians: how easily they can find relevant information, resume an assessment, and recognize missing details before completion. These observations would guide further changes to the sequence, information density, and status labels.</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="prev-next" aria-label="More case studies">
+      <a href="/work/sidestage">← Previous</a>
+      <a href="/">All work</a>
+      <a href="/work/campshare">Next →</a>
+    </nav>
+    </div>
+    </div>
+  </main>
+  <footer>
+    <span>Vika Tsukanova · Cardiology Dashboard</span>
+    <a href="#">Back to top ↑</a>
+  </footer>
+  <dialog class="shot-lightbox" id="shotLightbox" aria-label="Expanded screenshot">
+    <form method="dialog" class="shot-lightbox-bar">
+      <button type="submit" class="shot-lightbox-close" aria-label="Close">Close</button>
+    </form>
+    <img id="shotLightboxImg" alt="">
+  </dialog>
+
+  <script>
+    (function () {
+      const nav = document.querySelector('.chapter-nav');
+      if (nav) {
+        const links = [...nav.querySelectorAll('a[href^="#"]')];
+        const sections = links
+          .map((link) => document.querySelector(link.getAttribute('href')))
+          .filter(Boolean);
+
+        if (sections.length) {
+          const setActive = (id) => {
+            links.forEach((link) => {
+              const active = link.getAttribute('href') === `#${id}`;
+              link.classList.toggle('is-active', active);
+              if (active) link.setAttribute('aria-current', 'true');
+              else link.removeAttribute('aria-current');
+            });
+          };
+
+          const observed = new Map();
+          const pick = () => {
+            const visible = [...observed.entries()]
+              .filter(([, ratio]) => ratio > 0)
+              .sort((a, b) => b[1] - a[1]);
+            if (visible.length) setActive(visible[0][0]);
+          };
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                observed.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+              });
+              pick();
+            },
+            { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] }
+          );
+
+          sections.forEach((section) => observer.observe(section));
+          setActive(sections[0].id);
+        }
+      }
+
+      const lightbox = document.getElementById('shotLightbox');
+      const lightboxImg = document.getElementById('shotLightboxImg');
+      if (!lightbox || !lightboxImg || typeof lightbox.showModal !== 'function') return;
+
+      document.querySelectorAll('[data-expand]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const img = trigger.querySelector('img');
+          if (!img) return;
+          lightboxImg.src = img.currentSrc || img.src;
+          lightboxImg.alt = img.alt || '';
+          lightbox.showModal();
+        });
+      });
+
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) lightbox.close();
+      });
+    })();
+  </script>
+</body>
+</html>

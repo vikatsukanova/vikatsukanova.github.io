@@ -1,0 +1,163 @@
+.hero {
+  padding: clamp(3rem, 10vh, 6rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2.5rem, 6vh, 4rem);
+  text-align: center;
+  animation: rise 0.7s ease both;
+}
+
+.hello,
+.roleLine {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 400;
+  font-size: clamp(2rem, 5.5vw, 4.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.roleLine {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem 0.7rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.5rem;
+  padding: 0.35rem 1.1rem 0.45rem;
+  border: 1.5px solid var(--pill-border);
+  border-radius: 999px;
+  background: var(--pill);
+  font-weight: 500;
+  line-height: 1;
+  animation: pillSwap 0.45s ease;
+}
+
+.work {
+  padding: 0 clamp(1.25rem, 4vw, 3.5rem) 3.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sectionHead {
+  margin-bottom: 1.75rem;
+  text-align: center;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.sectionHead h2 {
+  margin: 0 0 0.4rem;
+  color: var(--ink);
+  font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.sectionHead p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.75rem 1.5rem;
+  list-style: none;
+}
+
+.card {
+  animation: rise 0.65s ease both;
+}
+
+.cardLink {
+  display: block;
+  color: inherit;
+  text-align: center;
+}
+
+.thumb {
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #e7efd8;
+  aspect-ratio: 1 / 1;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.cardLink:hover .thumb img,
+.cardLink:focus-visible .thumb img {
+  transform: scale(1.03);
+}
+
+.title {
+  margin: 1rem 0 0.35rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  font-family: var(--font);
+}
+
+.tags {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pillSwap {
+  from {
+    opacity: 0.35;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 1.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .card,
+  .pill,
+  .thumb img {
+    animation: none;
+    transition: none;
+  }
+
+  .cardLink:hover .thumb img,
+  .cardLink:focus-visible .thumb img {
+    transform: none;
+  }
+}

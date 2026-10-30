@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="129.117" height="39" viewBox="0 0 129.117 39" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Area chart">
+<g id="Area_1">
+<use xlink:href="#stroke0_0_18" fill="url(#paint0_linear_0_18)"/>
+<mask id="stroke1_0_18" fill="white">
+<use xlink:href="#stroke0_0_18"/>
+</mask>
+<path d="M0 35.75C0 35.75 15.0136 30.875 31.5285 30.875C48.0434 30.875 48.0434 17.875 64.5583 17.875C79.5719 17.875 79.5719 29.25 96.0868 29.25C112.602 29.25 129.117 0 129.117 0V39H0V35.75Z" stroke-width="2" stroke-linejoin="bevel" stroke="#FF9357" mask="url(#stroke1_0_18)"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_18" x1="64.5583" y1="0" x2="64.5583" y2="39" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF9357"/>
+<stop offset="1" stop-color="#FF9357" stop-opacity="0.17"/>
+</linearGradient>
+<path id="stroke0_0_18" d="M31.5285 30.875C15.0136 30.875 0 35.75 0 35.75V39H129.117V0C129.117 0 112.602 29.25 96.0868 29.25C79.5719 29.25 79.5719 17.875 64.5583 17.875C48.0434 17.875 48.0434 30.875 31.5285 30.875Z"/>
+</defs>
+</svg>

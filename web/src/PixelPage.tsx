@@ -1,6 +1,46 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './PixelPage.module.css'
 import { PROJECTS } from './projects'
+
+const ROLES = [
+  'a front-end developer',
+  'a UI/UX designer',
+  'a design systems builder',
+  'a product-minded engineer',
+] as const
+
+function useTypedRole(words: readonly string[]) {
+  const [index, setIndex] = useState(0)
+  const [text, setText] = useState('')
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setText(words[0] ?? '')
+      return
+    }
+
+    const full = words[index] ?? ''
+    if (!deleting && text === full) {
+      const pause = window.setTimeout(() => setDeleting(true), 1800)
+      return () => window.clearTimeout(pause)
+    }
+    if (deleting && text === '') {
+      setDeleting(false)
+      setIndex((value) => (value + 1) % words.length)
+      return
+    }
+
+    const delay = deleting ? 36 : 72
+    const tick = window.setTimeout(() => {
+      setText(deleting ? full.slice(0, text.length - 1) : full.slice(0, text.length + 1))
+    }, delay)
+    return () => window.clearTimeout(tick)
+  }, [deleting, index, text, words])
+
+  return text
+}
 
 const STACK = [
   {
@@ -10,43 +50,43 @@ const STACK = [
   {
     name: 'React',
     pixels: [
-    '0001100000110000',
-    '0001110001110000',
-    '0001111011110000',
-    '0001101110110000',
-    '0001101110110000',
-    '0011111111111000',
-    '1111110101111111',
-    '1110111111101111',
-    '1111110101111111',
-    '0011111111111000',
-    '0001101110110000',
-    '0001101110110000',
-    '0001111011110000',
-    '0001110001110000',
-    '0001100000110000',
-    '0000000000000000',
+      '0001100000110000',
+      '0001110001110000',
+      '0001111011110000',
+      '0001101110110000',
+      '0001101110110000',
+      '0011111111111000',
+      '1111110101111111',
+      '1110111111101111',
+      '1111110101111111',
+      '0011111111111000',
+      '0001101110110000',
+      '0001101110110000',
+      '0001111011110000',
+      '0001110001110000',
+      '0001100000110000',
+      '0000000000000000',
     ],
   },
   {
     name: 'Redux',
     pixels: [
-    '0000001111000000',
-    '0000011001100000',
-    '0000100000100000',
-    '0000100000010000',
-    '0001000000010000',
-    '0001001100000000',
-    '0001001111110000',
-    '0001000000001100',
-    '0111100000000110',
-    '0100100000110010',
-    '1000110000110001',
-    '1000111000100001',
-    '1000010001000001',
-    '1000000011000001',
-    '0110001110000010',
-    '0011111001111100',
+      '0000001111000000',
+      '0000011001100000',
+      '0000100000100000',
+      '0000100000010000',
+      '0001000000010000',
+      '0001001100000000',
+      '0001001111110000',
+      '0001000000001100',
+      '0111100000000110',
+      '0100100000110010',
+      '1000110000110001',
+      '1000111000100001',
+      '1000010001000001',
+      '1000000011000001',
+      '0110001110000010',
+      '0011111001111100',
     ],
   },
   {
@@ -56,340 +96,186 @@ const STACK = [
   {
     name: 'Playwright',
     pixels: [
-    '0000000000111100',
-    '0000000001111110',
-    '0001100011110111',
-    '0011110111011011',
-    '0110110111111001',
-    '0110010111000001',
-    '0111110110000011',
-    '0011101100011111',
-    '0001111111111110',
-    '0000111111111100',
-    '0000111111111100',
-    '0000011111111000',
-    '0000001111110000',
-    '0000000000000000',
-    '0000000000000000',
-    '0000000000000000',
+      '0000000000111100',
+      '0000000001111110',
+      '0001100011110111',
+      '0011110111011011',
+      '0110110111111001',
+      '0110010111000001',
+      '0111110110000011',
+      '0011101100011111',
+      '0001111111111110',
+      '0000111111111100',
+      '0000111111111100',
+      '0000011111111000',
+      '0000001111110000',
+      '0000000000000000',
+      '0000000000000000',
+      '0000000000000000',
     ],
   },
   {
     name: 'Vitest',
     pixels: [
-    '0000011110000000',
-    '0000111000000000',
-    '0001111000000000',
-    '0000111100000000',
-    '0000011100000000',
-    '0000001100000000',
-    '0000000000000000',
-    '1100000000000011',
-    '1110000000000111',
-    '0111000000001110',
-    '0011100000011100',
-    '0001110000111000',
-    '0000111001110000',
-    '0000011111100000',
-    '0000001111000000',
-    '0000000110000000',
+      '0000011110000000',
+      '0000111111000000',
+      '0001110011100000',
+      '0011100001110000',
+      '0111000000111000',
+      '1110000000011100',
+      '1100000000001100',
+      '1100000000001100',
+      '1110000000011100',
+      '0111000000111000',
+      '0011100001110000',
+      '0001110011100000',
+      '0000111111000000',
+      '0000011110000000',
+      '0000001100000000',
+      '0000000000000000',
     ],
   },
   {
     name: 'JavaScript',
-    pixels: ['00000000', '11100111', '00100100', '00100111', '00100001', '00100001', '01100111', '00000000'],
+    pixels: ['11111110', '10000010', '10000010', '10011010', '10011010', '10000010', '11111110', '00000000'],
   },
   {
     name: 'TypeScript',
-    pixels: ['00000000', '11100111', '01000100', '01000111', '01000001', '01000001', '01000111', '00000000'],
+    pixels: ['11111111', '10000001', '10111101', '10011001', '10011001', '10111101', '10000001', '11111111'],
   },
   {
     name: 'CSS',
-    pixels: ['11111110', '00000011', '00000011', '11111110', '00000011', '00000011', '11111110', '00000000'],
-  },
-] as const
-
-type BulletGroup = { title: string; items: readonly string[] }
-
-type Job = {
-  id: string
-  role: string
-  company: string
-  dates: string
-  location: string
-  intro?: string
-  callout?: string
-  scroll?: boolean
-  groups?: readonly BulletGroup[]
-  bullets?: readonly string[]
-}
-
-const JOBS: readonly Job[] = [
-  {
-    id: 'pelmorex',
-    role: 'UI/UX Developer',
-    scroll: true,
-    company: 'Pelmorex Corp',
-    dates: 'Aug 2017 - Present',
-    location: 'Toronto, Ontario, Canada - Remote',
-    intro:
-      'Over 9 years, I drove front-end architecture for ad-tech and analytics platforms. Bridging design and engineering, I scaled legacy apps, built a Next.js BFF, and architected the shared component library.',
-    groups: [
-      {
-        title: 'Design System Architecture',
-        items: [
-          'Spearheaded the shared MUI Storybook library, acting as primary author for all UI updates.',
-          'Engineered foundational UI modules with Vitest coverage and multi-brand theming via centralized tokens.',
-          'Led the incremental migration of product surfaces to standardized components.',
-          'Elevated peer engineering skills by teaching component patterns and best practices via collaborative code reviews.',
-        ],
-      },
-      {
-        title: 'Audience Insights Platform',
-        items: [
-          'Engineered live B2B SaaS dashboards on a Next.js/TypeScript platform.',
-          'Specialized in high-fidelity data visualization via data-dense charts and hierarchical tables prioritizing accuracy.',
-          'Architected complex state management (Redux Toolkit, SWR), establishing robust data-fetching and caching patterns.',
-          'Architected BFF solutions with API routes, Prisma schemas, and end-to-end CRUD flows.',
-          'Shipped an AI-generated insights interface with strict business logic for data accuracy.',
-          'Built dynamic data tables with server-side aggregation and automated PDF/CSV/Excel exports.',
-          'Implemented Playwright/Vitest testing and ARIA accessibility standards.',
-        ],
-      },
-      {
-        title: 'Developer Tooling',
-        items: [
-          'Integrated an AI-assisted development framework with agent workflows to streamline team engineering.',
-        ],
-      },
-      {
-        title: 'Ad Campaign Delivery Platform',
-        items: [
-          'Scaled a JavaScript SaaS app, developing interactive ad units and dynamic forms.',
-          'Designed UI states in Figma, creating a shared style guide prior to formal design systems.',
-          'Led a framework upgrade via automated codemods and visual regression testing.',
-          'Optimized web performance and browser internals for data-heavy apps, scaling dense interfaces under legacy constraints.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'ig-frontend',
-    role: 'Front-End Developer',
-    company: 'Investors Group',
-    dates: 'Nov 2016 - Aug 2017',
-    location: 'Toronto, Ontario, Canada',
-    callout:
-      'Translating UI mockups using HTML, CSS+SASS, Jquery in a structured Lean UX environment. Working with UI/UX designers to bridge the gap between graphical design and technical implementation.',
-    bullets: [
-      'Building reusable code and libraries for future use.',
-      'Working with Salesforce and Adobe Experience Manager CMS integration.',
-      'Solving cross-browser compatibility issues from IE10 and up.',
-      'Helping back-end developers with front-end troubleshooting.',
-      'Mobile first development using Foundation, SASS and Gulp.',
-      'Using Git for source control.',
-      'Front-End Development',
-    ],
-  },
-  {
-    id: 'ig-interaction',
-    role: 'Interaction Designer',
-    company: 'Investors Group',
-    dates: 'Aug 2016 - Nov 2016',
-    location: 'Toronto, Ontario, Canada',
-    intro:
-      'Responsible for UI deliverables, screen and micro-interaction layouts, style-guides, multi-screen view states. Providing ongoing assistance to Associate Manager of Interaction Design.',
-  },
-  {
-    id: 'original-fly',
-    role: 'Front-End Developer Intern',
-    company: 'Original Fly',
-    dates: 'Jul 2015',
-    location: 'Toronto, Ontario, Canada',
-    intro: 'Responsible for website maintenance, adjustments and development of report web pages for applications.',
+    pixels: ['01111110', '11000011', '11000000', '01111100', '00000011', '11000011', '01111110', '00000000'],
   },
 ]
 
-const EDUCATION = [
-  { program: 'Javascript', school: 'HackerYou', dates: '2019' },
-  { program: 'Full-Stack', school: 'Juno College', dates: '2019' },
-  { program: 'Web Design', school: 'Sheridan College', dates: '2015 - 2016' },
-  { program: 'Visual & Creative Arts', school: 'Sheridan College', dates: '2012 - 2014' },
-] as const
-
-type WorkCard = {
-  label: string
-  image: string
-  slug?: string
+const WORK_ART: Record<string, string> = {
+  sidestage: '#e8e2d8',
+  clinical: '#c5d4ef',
+  compass: '#d7ebe3',
+  campshare: '#e8d5a8',
+  'cheese-factory': '#efd4c0',
+  'racquet-science': '#c5e8d2',
+  'mission-blue': '#c4ccec',
 }
 
-function workFromProject(slug: string): WorkCard {
+function workFromProject(slug: string) {
   const project = PROJECTS.find((item) => item.slug === slug)
   if (!project) throw new Error(`Missing project: ${slug}`)
-  return { label: project.label, image: project.image, slug: project.slug }
+  return {
+    label: project.label,
+    image: project.homeImage ?? project.image,
+    presentation: project.homePresentation ?? 'browser',
+    slug: project.slug,
+    href: project.caseStudyHref ?? `/work/${project.slug}`,
+    stack: project.stack.slice(0, 3),
+    summary: project.summary,
+    artColor: WORK_ART[slug] ?? '#c9d6f5',
+  }
 }
 
-const WORK: WorkCard[] = [
-  workFromProject('clinical-interface'),
+const WORK = [
+  workFromProject('sidestage'),
+  workFromProject('clinical'),
   workFromProject('compass'),
-  workFromProject('spendguard'),
-  // { label: 'Geargrid', image: '/work-geargrid.jpg?v=1' },
-  workFromProject('fluenttrack'),
+  workFromProject('campshare'),
+  workFromProject('cheese-factory'),
+  workFromProject('racquet-science'),
+  workFromProject('mission-blue'),
 ]
 
-const LINKS = [
-  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/victoriatsukanova' },
-  { name: 'GitHub', url: 'https://github.com/vikatsukanova' },
-  { name: 'Resume', url: '/CV_Victoria_Tsukanova.pdf' },
-  { name: 'Email', url: 'mailto:victoriatsukanova@gmail.com' },
-]
-
-function JobCard({ job }: { job: Job }) {
-  const [open, setOpen] = useState(false)
-  const panelId = `${job.id}-panel`
-
-  return (
-    <article className={styles.card}>
-      <button
-        type="button"
-        className={styles.cardButton}
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span className={styles.roleWrap}>
-          <span className={styles.toggle} aria-hidden="true">
-            {open ? '[-]' : '[+]'}
-          </span>
-          <span className={styles.role}>{job.role}</span>
-        </span>
-        <span className={styles.meta}>
-          <span className={styles.company}>{job.company}</span>
-          <span className={styles.dates}>{job.dates}</span>
-        </span>
-      </button>
-      <div id={panelId} className={open ? styles.panelOpen : styles.panel} aria-hidden={!open}>
-        <div className={job.scroll ? `${styles.panelInner} ${styles.panelScroll}` : styles.panelInner}>
-          <p className={styles.location}>{job.location}</p>
-          {job.intro ? <p className={styles.intro}>{job.intro}</p> : null}
-          {job.callout ? <p className={styles.callout}>{job.callout}</p> : null}
-          {job.groups ? (
-            <div className={styles.groups}>
-              {job.groups.map((group) => (
-                <div key={group.title}>
-                  <h3 className={styles.groupTitle}>{group.title}</h3>
-                  <ul className={styles.bullets}>
-                    {group.items.map((item) => (
-                      <li key={item} className={styles.bullet}>
-                        <span aria-hidden="true">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          ) : null}
-          {job.bullets ? (
-            <ul className={styles.bullets}>
-              {job.bullets.map((item) => (
-                <li key={item} className={styles.bullet}>
-                  <span aria-hidden="true">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
-      </div>
-    </article>
-  )
-}
+const ACCENT = '#d9fa67'
 
 export function PixelPage() {
+  const role = useTypedRole(ROLES)
+
+  useEffect(() => {
+    document.title = 'Victoria Tsukanova'
+  }, [])
+
   return (
-    <div className={styles.page}>
-      <div className={styles.gridBg} aria-hidden="true" />
-      <div className={styles.marks} aria-hidden="true">
-        <span className={styles.markTl}>+</span>
-        <span className={styles.markTr}>:::</span>
-        <span className={styles.markBl}>::</span>
-        <span className={styles.markBr}>+</span>
-      </div>
+    <div className={styles.page} style={{ ['--accent' as string]: ACCENT }}>
+      <a className={styles.skip} href="#work">
+        Skip to work
+      </a>
+
+      <header className={styles.header}>
+        <a className={styles.brand} href="/" aria-label="Victoria Tsukanova homepage">
+          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="/about">About</a>
+          <div className={styles.navActions}>
+            <a className={styles.navButton} href="mailto:victoriatsukanova@gmail.com">
+              Say hi
+            </a>
+            <a
+              className={styles.navButton}
+              href="https://www.linkedin.com/in/victoriatsukanova"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a
+              className={styles.navButton}
+              href="/brand/CV_Victoria_Tsukanova.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Resume
+            </a>
+          </div>
+        </nav>
+      </header>
 
       <main className={styles.main}>
-        <section className={`${styles.hero} ${styles.reveal}`} aria-label="Introduction">
-          <div className={styles.heroRow}>
-            <div className={styles.copyBlock}>
-              <div className={styles.spark}>✤</div>
-              <h1 className={styles.name}>
-                Victoria
-                <br />
-                Tsukanova
-              </h1>
-              <p className={styles.roles}>
-                <span>Front-End Developer</span>
-                <span className={styles.slash}>|</span>
-                <span>Montreal, QC</span>
-              </p>
-              <p className={styles.lede}>
-                I bridge UI/UX design with technical implementation, specializing in scalable
-                design systems, modern React architectures, robust automated testing, AI-integrated
-                workflows and complex data interfaces.
-              </p>
-              <ul className={styles.links}>
-                {LINKS.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.url}
-                      className={styles.link}
-                      {...(link.url.startsWith('http') || link.url.endsWith('.pdf')
-                        ? { target: '_blank', rel: 'noreferrer' }
-                        : {})}
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className={styles.portrait}>
-              <div className={styles.waver} aria-hidden="true">
-                <span className={styles.waveBody} />
-                <span className={styles.waveArm} />
-              </div>
-              <div className={styles.frame}>
-                <img
-                  src="/pixel-portrait.jpg?v=5"
-                  alt="Victoria Tsukanova"
-                  className={styles.photo}
-                />
-              </div>
-            </div>
+        <section className={styles.hero} aria-label="Introduction">
+          <div className={styles.headline}>
+            <h1>
+              Hi, I&apos;m Vika
+              <span className={styles.typedLine}>
+                <span className={styles.typedRole} aria-live="polite">
+                  {role}
+                </span>
+                <span className={styles.caret} aria-hidden="true" />
+              </span>
+            </h1>
           </div>
-          <a className={styles.scrollDown} href="#stack">
-            <span className={styles.scrollLabel}>Scroll down</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
+
+          <div className={styles.heroCopy}>
+            <p className={styles.roles}>
+              <span>Montreal, QC</span>
+            </p>
+            <p className={styles.lede}>
+              I bridge UI/UX design with technical implementation, specializing in scalable design
+              systems, modern React architectures, robust automated testing, AI-integrated
+              workflows and complex data interfaces.
+            </p>
+          </div>
+
+          <a className={styles.roundLink} href="#stack">
+            <span>Scroll down</span>
+            <b aria-hidden="true">↓</b>
           </a>
         </section>
 
-        <div className={styles.content}>
-          <section className={`${styles.stackSection} ${styles.reveal} ${styles.delay1}`} id="stack">
-            <span className={styles.stackMark} aria-hidden="true">
-              ✕
-            </span>
-            <div className={styles.titleWrap}>
-              <h2 className={styles.sectionTitle}>My Stack</h2>
-              <div className={styles.titleRule} />
-            </div>
-            <div className={styles.stack}>
-              {STACK.map((item) => (
-                <div key={item.name} className={styles.icon}>
-                  <div className={styles.iconBox}>
-                  <svg viewBox={`0 0 ${item.pixels[0].length} ${item.pixels.length}`} className={styles.iconSvg} aria-hidden="true">
+        <section className={styles.stackSection} id="stack">
+          <div className={styles.sectionLabel}>
+            <h2>
+              My Stack<span className={styles.smallStar}>✳</span>
+            </h2>
+            <span className={styles.eyebrow}>Tools I build with</span>
+          </div>
+          <div className={styles.stack}>
+            {STACK.map((item) => (
+              <div key={item.name} className={styles.icon}>
+                <div className={styles.iconBox}>
+                  <svg
+                    viewBox={`0 0 ${item.pixels[0].length} ${item.pixels.length}`}
+                    className={styles.iconSvg}
+                    aria-hidden="true"
+                  >
                     {item.pixels.map((row, y) =>
                       row.split('').map((cell, x) =>
                         cell === '1' ? (
@@ -398,111 +284,78 @@ export function PixelPage() {
                       ),
                     )}
                   </svg>
-                  </div>
-                  <span className={styles.iconName}>{item.name}</span>
                 </div>
-              ))}
-            </div>
-          </section>
+                <span className={styles.iconName}>{item.name}</span>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <section className={`${styles.workSection} ${styles.reveal} ${styles.delay2}`} id="work">
-            <div className={styles.titleWrap}>
-              <h2 className={styles.sectionTitle}>My Work</h2>
-              <div className={styles.titleRule} />
-            </div>
-            <div className={styles.workGrid}>
-              {WORK.map((item) => {
-                const card = (
-                  <>
-                    {'image' in item && item.image ? (
-                      <div className={styles.workShot}>
+        <section className={styles.workSection} id="work">
+          <div className={styles.sectionLabel}>
+            <h2>
+              My Work<span className={styles.smallStar}>✳</span>
+            </h2>
+            <span className={styles.eyebrow}>Selected projects & builds</span>
+          </div>
+          <div className={styles.workGrid}>
+            {WORK.map((item, index) => (
+              <a key={item.label} className={styles.workCard} href={item.href}>
+                <div className={styles.workArt} style={{ background: item.artColor }}>
+                  <div className={styles.artGrid} aria-hidden="true" />
+                  <span className={styles.projectKicker}>
+                    {String(index + 1).padStart(2, '0')} / {item.label}
+                  </span>
+                  {item.image ? (
+                    item.presentation === 'phone' ? (
+                      <div className={styles.phoneFrame}>
+                        <span className={styles.phoneNotch} aria-hidden="true" />
                         <img src={item.image} alt="" />
                       </div>
                     ) : (
-                      <div className={styles.workFrame} aria-hidden="true">
-                        +
+                      <div className={styles.browserFrame}>
+                        <div className={styles.browserTop}>
+                          <i />
+                          <i />
+                          <i />
+                          <span>{item.label}</span>
+                        </div>
+                        <img src={item.image} alt="" />
                       </div>
-                    )}
-                    <p className={styles.workLabel}>{item.label}</p>
-                  </>
-                )
-
-                if (item.slug) {
-                  return (
-                    <a key={item.label} className={styles.workCard} href={`/work/${item.slug}`}>
-                      {card}
-                    </a>
-                  )
-                }
-
-                return (
-                  <article key={item.label} className={styles.workCard}>
-                    {card}
-                  </article>
-                )
-              })}
-            </div>
-          </section>
-
-          <div className={`${styles.split} ${styles.reveal} ${styles.delay2}`}>
-            <section className={styles.col} id="experience">
-              <span className={styles.colMark} aria-hidden="true">
-                ▦
-              </span>
-              <div className={styles.titleWrap}>
-                <h2 className={styles.sectionTitle}>Experience</h2>
-                <div className={styles.titleRule} />
-              </div>
-              <div className={styles.cards}>
-                {JOBS.map((job) => (
-                  <JobCard key={job.id} job={job} />
-                ))}
-              </div>
-            </section>
-
-            <section className={styles.col} id="education">
-              <span className={styles.eduMark} aria-hidden="true">
-                ✛
-              </span>
-              <div className={styles.titleWrap}>
-                <h2 className={styles.sectionTitle}>Education</h2>
-                <div className={styles.titleRule} />
-              </div>
-              <div className={styles.cards}>
-                {EDUCATION.map((item, index) => (
-                  <article
-                    key={`${item.school}-${item.program}`}
-                    className={index === EDUCATION.length - 1 ? styles.eduLast : styles.eduCard}
-                  >
-                    {index === EDUCATION.length - 1 ? (
-                      <span className={styles.eduCorner} aria-hidden="true">
-                        ▤
-                      </span>
-                    ) : null}
-                    <span className={styles.program}>{item.program}</span>
-                    <span className={styles.meta}>
-                      <span className={styles.company}>{item.school}</span>
-                      <span className={styles.dates}>{item.dates}</span>
-                    </span>
-                  </article>
-                ))}
-              </div>
-            </section>
+                    )
+                  ) : (
+                    <div className={styles.workFrame} aria-hidden="true">
+                      +
+                    </div>
+                  )}
+                </div>
+                <div className={styles.projectInfo}>
+                  <div>
+                    <div className={styles.chips}>
+                      {item.stack.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                    <h3>{item.label}</h3>
+                    <p>{item.summary}</p>
+                  </div>
+                  <div className={styles.projectCta}>
+                    <span>View project</span>
+                    <b aria-hidden="true">↗</b>
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
-        </div>
+        </section>
       </main>
+
       <footer className={styles.footer}>
-        <p className={styles.footerCopy}>© 2026 Victoria Tsukanova</p>
-        <div className={styles.pixelStage} aria-hidden="true">
-          <div className={styles.pixelMover}>
-            <div className={styles.pixelFace}>
-              <div className={styles.pixelHop}>
-                <span className={styles.pixelBody} />
-                <span className={styles.pixelLegs} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <a className={styles.brand} href="#">
+          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
+        </a>
+        <span>© 2026 Victoria Tsukanova</span>
+        <a href="#">Back to the top ↑</a>
       </footer>
     </div>
   )

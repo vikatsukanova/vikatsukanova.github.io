@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="132.097" height="42.8113" viewBox="0 0 132.097 42.8113" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Area chart">
+<path id="Area_1" d="M32.512 35.478C15.7438 35.478 0.5 20.103 0.5 20.103V42.3113H131.597V1.31132C131.597 1.31132 114.829 20.103 98.0604 20.103C81.2922 20.103 81.2922 33.7697 66.0484 33.7697C49.2802 33.7697 49.2802 35.478 32.512 35.478Z" fill="url(#paint0_linear_0_37)" stroke="#1998FF"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_37" x1="66.0484" y1="1.31132" x2="66.0484" y2="42.3113" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1998FF"/>
+<stop offset="1" stop-color="#1998FF" stop-opacity="0.17"/>
+</linearGradient>
+</defs>
+</svg>

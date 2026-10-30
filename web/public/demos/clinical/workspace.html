@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#edf4f8">
+  <title>Patient workspace · Michael Smith</title>
+  <link rel="stylesheet" href="workspace.css?v=exam-hide-text">
+  <script src="workspace.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to patient workspace</a>
+  <header class="topbar">
+    <a class="brand" href="workspace.html" aria-label="Patient workspace home"><svg viewBox="0 0 32 32"
+        aria-hidden="true">
+        <path d="M3 17h8l3-10 5 19 3-11h7" />
+      </svg><span>Patient workspace</span></a>
+    <nav class="primary-nav" aria-label="Main navigation"><a class="active" href="#patients"
+        aria-current="page">Patients</a><a href="#schedule">Schedule</a><a href="#tasks">Tasks</a></nav>
+    <button class="profile-button" type="button" aria-label="Profile menu"><span>JD</span><svg viewBox="0 0 16 16"
+        aria-hidden="true">
+        <path d="m4 6 4 4 4-4" />
+      </svg></button>
+  </header>
+  <main id="main" class="page-shell">
+    <div class="breadcrumbs"><a href="#patients">Patients</a><span aria-hidden="true">/</span><span>Michael Smith</span>
+    </div>
+
+    <div class="workspace-grid">
+      <aside class="left-column" aria-label="Patient information">
+        <section class="card summary-card" aria-labelledby="patient-name">
+          <div class="summary-identity">
+            <div class="patient-avatar" aria-hidden="true">MS</div>
+            <div class="patient-identity">
+              <h1 id="patient-name">Michael Smith</h1>
+              <p>65 years <span>·</span> Male <span>·</span> Patient #004218</p>
+            </div>
+          </div>
+          <div class="summary-scroll">
+          <details class="summary-section" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 4h10v17H5V6h2M9 3h6v3H9z" />
+                <path d="M8 11h7M8 15h7" />
+              </svg>
+              <span>Medical history</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body">
+              <p>PCI <span>·</span> CABG</p>
+            </div>
+          </details>
+          <details class="summary-section" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.5 8.5c0 5-8.5 11-8.5 11s-8.5-6-8.5-11A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 8.5 2.5Z" />
+              </svg>
+              <span>Risk factors</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body">
+              <div class="chips"><span class="chip chip-alert">Hypertension</span><span class="chip">Current
+                  smoker</span></div>
+            </div>
+          </details>
+          <details class="summary-section" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="9" cy="8" r="3" />
+                <circle cx="17" cy="9" r="2.5" />
+                <path d="M3 20v-2c0-3 2.5-5 6-5s6 2 6 5v2H3ZM15 14c3.3 0 6 1.6 6 4v2h-4" />
+              </svg>
+              <span>Care team</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body">
+              <p class="subtle">Primary care</p>
+              <p>Susan E. Bennett, MD</p>
+            </div>
+          </details>
+          <details class="summary-section medication-section" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5a5 5 0 0 1 7.1 0l3.9 3.9a5 5 0 0 1-7.1 7.1L8 12.1A5 5 0 0 1 8 5Z" />
+                <path d="m9 13 7-7" />
+              </svg>
+              <span>Medications</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body medication-content">
+              <div class="med-tabs" role="tablist" aria-label="Medication category"><button class="selected" role="tab"
+                  aria-selected="true" data-med-tab="cardiac">Cardiac <b>15</b></button><button role="tab"
+                  aria-selected="false" data-med-tab="other">Other <b>3</b></button></div>
+              <div class="med-list" data-med-list><button type="button"
+                  data-notice="Antiplatelet medication details are not available in this preview."><svg
+                    viewBox="0 0 18 18" aria-hidden="true">
+                    <path d="M5 4a4 4 0 0 1 5.7 0l3.3 3.3a4 4 0 0 1-5.7 5.7L5 9.7A4 4 0 0 1 5 4Z" />
+                    <path d="m5.5 10 5-5" />
+                  </svg><span>Antiplatelet</span><span class="chevron">›</span></button><button type="button"
+                  data-notice="Calcium channel blocker details are not available in this preview."><svg
+                    viewBox="0 0 18 18" aria-hidden="true">
+                    <path d="M5 4a4 4 0 0 1 5.7 0l3.3 3.3a4 4 0 0 1-5.7 5.7L5 9.7A4 4 0 0 1 5 4Z" />
+                    <path d="m5.5 10 5-5" />
+                  </svg><span>Calcium channel blocker</span><span class="chevron">›</span></button></div><button
+                type="button" class="text-link"
+                data-notice="Full medication list is not available in this preview.">View all medications <span
+                  aria-hidden="true">→</span></button>
+            </div>
+          </details>
+          <details class="summary-section allergy-section" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 4 7v10l8 4 8-4V7Z" />
+                <path d="M12 9v4M12 16.5v.5" />
+              </svg>
+              <span>Allergies</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body">
+              <p>No known allergies</p>
+            </div>
+          </details>
+          <details class="summary-section demographics" open>
+            <summary>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="7" r="4" />
+                <path d="M4 21v-2a8 8 0 0 1 16 0v2z" />
+              </svg>
+              <span>Lifestyle &amp; demographics</span>
+              <svg class="summary-chevron" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 6 5 5 5-5" />
+              </svg>
+            </summary>
+            <div class="summary-body">
+              <p>Lives independently</p>
+              <p>Smoking: Current smoker</p>
+              <p>Preferred language: English</p>
+            </div>
+          </details>
+          </div>
+        </section>
+      </aside>
+
+      <section class="card assessment-card" aria-labelledby="assessment-title">
+        <div class="section-heading">
+          <h2 id="assessment-title" class="card-title">Previous assessments</h2><button type="button" class="outline-button small-button"
+            id="startAssessment" data-open-assessment="symptoms"><span aria-hidden="true">+</span>Start
+            assessment</button>
+        </div>
+        <div class="diagnosis" role="group" aria-label="Diagnosis filters">
+          <button type="button" aria-pressed="true">CAD</button>
+          <button type="button" aria-pressed="false">CMP</button>
+          <button type="button" aria-pressed="false">EP</button>
+        </div>
+        <p id="diagnosis-label" class="diagnosis-name">Coronary artery disease</p>
+        <div class="timeline previous-list">
+          <article class="previous-assessment" aria-labelledby="assessment-22-june">
+            <button class="previous-row" type="button" aria-expanded="false" data-toggle-assessment>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M6 3h9l2 2v13H4V5h2M7 2v4h6V2M7 10h7M7 13h7" />
+              </svg>
+              <span id="assessment-22-june"><strong>22 June 2021</strong><small>Cardiac assessment</small></span>
+              <span class="previous-meta"><em class="pending"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.2L10 10"/></svg>Pending</em>
+                <svg class="expand-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m5 8 5 5 5-5" />
+                </svg>
+              </span>
+            </button>
+            <div class="assessment-summary">
+              <section class="symptom-card open">
+                <div class="symptom-head">
+                  <div>
+                    <h4>Shortness of breath</h4><span>Patient-reported</span>
+                  </div>
+                </div>
+                <dl class="symptom-details">
+                  <div>
+                    <dt>Onset</dt>
+                    <dd>20 June 2021</dd>
+                  </div>
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>Unknown</dd>
+                  </div>
+                  <div>
+                    <dt>Trigger</dt>
+                    <dd>Mild exertion</dd>
+                  </div>
+                </dl>
+              </section>
+              <div class="summary-block">
+                <h4>Findings</h4>
+                <p>Not recorded yet</p>
+              </div>
+              <div class="summary-block">
+                <h4>Plan</h4>
+                <p>Draft in progress — complete the assessment to add a plan.</p>
+              </div>
+              <div class="assessment-footer">
+                <button type="button" class="outline-button small-button" data-open-assessment="symptoms">Continue
+                  assessment</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="previous-assessment is-open" aria-labelledby="assessment-9-june">
+            <button class="previous-row" type="button" aria-expanded="true" data-toggle-assessment>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M6 3h9l2 2v13H4V5h2M7 2v4h6V2M7 10h7M7 13h7" />
+              </svg>
+              <span id="assessment-9-june"><strong>9 June 2021</strong><small>Cardiac assessment</small></span>
+              <span class="previous-meta"><em class="submitted"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="m5.2 8.2 2 2 3.6-3.8"/></svg>Submitted</em>
+                <svg class="expand-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m5 8 5 5 5-5" />
+                </svg>
+              </span>
+            </button>
+            <div class="assessment-summary">
+              <section class="symptom-card open">
+                <div class="symptom-head">
+                  <div>
+                    <h4>Chest tightness</h4><span>Patient-reported</span>
+                  </div>
+                </div>
+                <dl class="symptom-details">
+                  <div>
+                    <dt>Location</dt>
+                    <dd>Centre of chest</dd>
+                  </div>
+                  <div>
+                    <dt>Radiation</dt>
+                    <dd>Arm</dd>
+                  </div>
+                  <div>
+                    <dt>Onset</dt>
+                    <dd>5 June 2021</dd>
+                  </div>
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>5 minutes</dd>
+                  </div>
+                  <div>
+                    <dt>Frequency</dt>
+                    <dd>2 episodes in 2 weeks</dd>
+                  </div>
+                  <div>
+                    <dt>Trigger</dt>
+                    <dd>Walking</dd>
+                  </div>
+                  <div>
+                    <dt>Relief</dt>
+                    <dd>Rest</dd>
+                  </div>
+                </dl>
+              </section>
+              <div class="summary-block">
+                <h4>Findings</h4>
+                <p>Blood pressure 128 / 78 mmHg · Heart rate 72 bpm · Soft systolic murmur</p>
+              </div>
+              <div class="summary-block">
+                <h4>Plan</h4>
+                <p>Continue current antiplatelet therapy. Lifestyle counselling for smoking cessation. Follow up in clinic.</p>
+              </div>
+              <div class="assessment-footer">
+                <button type="button" class="outline-button small-button" data-open-assessment="review">Open
+                  assessment</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="previous-assessment" aria-labelledby="assessment-15-march">
+            <button class="previous-row" type="button" aria-expanded="false" data-toggle-assessment>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M6 3h9l2 2v13H4V5h2M7 2v4h6V2M7 10h7M7 13h7" />
+              </svg>
+              <span id="assessment-15-march"><strong>15 March 2021</strong><small>Cardiac assessment</small></span>
+              <span class="previous-meta"><em class="submitted"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="m5.2 8.2 2 2 3.6-3.8"/></svg>Submitted</em>
+                <svg class="expand-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m5 8 5 5 5-5" />
+                </svg>
+              </span>
+            </button>
+            <div class="assessment-summary">
+              <section class="symptom-card open">
+                <div class="symptom-head">
+                  <div>
+                    <h4>Chest discomfort</h4><span>Patient-reported</span>
+                  </div>
+                </div>
+                <dl class="symptom-details">
+                  <div>
+                    <dt>Location</dt>
+                    <dd>Left chest</dd>
+                  </div>
+                  <div>
+                    <dt>Onset</dt>
+                    <dd>10 March 2021</dd>
+                  </div>
+                  <div>
+                    <dt>Duration</dt>
+                    <dd>10 minutes</dd>
+                  </div>
+                  <div>
+                    <dt>Trigger</dt>
+                    <dd>Climbing stairs</dd>
+                  </div>
+                  <div>
+                    <dt>Relief</dt>
+                    <dd>Rest · GTN</dd>
+                  </div>
+                </dl>
+              </section>
+              <div class="summary-block">
+                <h4>Findings</h4>
+                <p>Blood pressure 134 / 82 mmHg · Heart rate 78 bpm · No oedema</p>
+              </div>
+              <div class="summary-block">
+                <h4>Plan</h4>
+                <p>Cardiac catheterization completed. Optimise statin therapy. Review results in clinic.</p>
+              </div>
+              <div class="assessment-footer">
+                <button type="button" class="outline-button small-button" data-open-assessment="review">Open
+                  assessment</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="right-column" aria-label="Clinical data">
+        <section class="card results-card" aria-labelledby="results-title">
+          <div class="results-title-row">
+            <div>
+              <h2 id="results-title">Clinical results</h2>
+              <p>Latest available <span>·</span> 8 June 2021</p>
+            </div>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Clinical results type"><button role="tab" aria-selected="true"
+              class="selected" data-results-tab="Labs">Labs</button><button role="tab" aria-selected="false"
+              data-results-tab="ECG">ECG</button><button role="tab" aria-selected="false"
+              data-results-tab="Echo">Echo</button><button role="tab" aria-selected="false"
+              data-results-tab="Cath">Cath</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Test</th>
+                  <th scope="col">Result</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody">
+                <tr>
+                  <td>LDL</td>
+                  <td>1.4 mmol/L</td>
+                </tr>
+                <tr>
+                  <td>HbA1c</td>
+                  <td>6.0 %</td>
+                </tr>
+                <tr>
+                  <td>ALT</td>
+                  <td>43 U/L</td>
+                </tr>
+                <tr>
+                  <td>Potassium</td>
+                  <td>4.0 mmol/L</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="results-foot"><span><svg viewBox="0 0 18 18" aria-hidden="true">
+                <circle cx="9" cy="9" r="7" />
+                <path d="M9 8v5M9 5.5v.3" />
+              </svg>Reference ranges available in reports.</span><button type="button" class="text-link"
+              data-notice="Lab reports are not available in this preview.">View lab reports <b
+                aria-hidden="true">→</b></button></div>
+        </section>
+        <section class="card examination-card" aria-labelledby="exam-title">
+          <div class="exam-title">
+            <h2 id="exam-title">Examination</h2>
+          </div>
+          <div class="tabs exam-tabs" role="tablist" aria-label="Examination category"><button class="selected"
+              role="tab" aria-selected="true" data-exam-tab="Cardiac">Cardiac</button><button role="tab"
+              aria-selected="false" data-exam-tab="Volume status">Volume status</button><button role="tab"
+              aria-selected="false" data-exam-tab="Other">Other</button></div>
+          <div class="empty-state"><svg viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M10 4h13l8 8v24H10z" />
+              <path d="M23 4v9h8M15 20h11M15 25h11M15 30h7" />
+            </svg><strong>No findings recorded</strong>
+            <p>Add examination findings to document<br class="wide-only"> today's assessment.</p><button
+              class="outline-button" id="addFindings" type="button"><span aria-hidden="true">+</span>Add
+              findings</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+    <div id="notice" class="toast" role="status" aria-live="polite" hidden></div>
+  </main>
+
+  <dialog class="assessment-modal" id="assessmentModal" aria-labelledby="assessmentModalTitle">
+    <div class="assessment-modal-shell">
+      <header class="assessment-modal-head">
+        <div>
+          <h2 id="assessmentModalTitle">New Assessment</h2>
+        </div>
+        <button type="button" class="assessment-modal-close" id="closeAssessment" aria-label="Close assessment">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M5 5l10 10M15 5 5 15" />
+          </svg>
+        </button>
+      </header>
+      <iframe id="assessmentFrame" class="assessment-frame" title="New Assessment form" src="about:blank"></iframe>
+    </div>
+  </dialog>
+</body>
+
+</html>
