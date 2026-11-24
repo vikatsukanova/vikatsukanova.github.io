@@ -1,5 +1,5 @@
 import { useEffect, useState, type MouseEvent } from 'react'
-import { navigate } from './SiteChrome'
+import { navigate } from './navigation'
 import styles from './SiteHeader.module.css'
 
 type SiteHeaderProps = {

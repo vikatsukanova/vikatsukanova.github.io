@@ -1,7 +1,7 @@
 import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import styles from './AboutPage.module.css'
 import { PixelMosaic } from './PixelMosaic'
-import { navigate } from './SiteChrome'
+import { navigate } from './navigation'
 import { SiteHeader } from './SiteHeader'
 
 type Job = {

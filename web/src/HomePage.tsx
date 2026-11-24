@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { buildProjects, homeProjects, type Project } from './projects'
-import { SiteChrome, navigate } from './SiteChrome'
+import { navigate } from './navigation'
+import { SiteChrome } from './SiteChrome'
 import styles from './HomePage.module.css'
 
 const PILL_WORDS = ['brand', 'interface', 'product'] as const

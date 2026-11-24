@@ -19,7 +19,7 @@ import {
   type Project,
 } from './projects'
 import styles from './ProjectPage.module.css'
-import { navigate } from './SiteChrome'
+import { navigate } from './navigation'
 import { SiteHeader } from './SiteHeader'
 
 type LightboxShot = { src: string; alt: string }

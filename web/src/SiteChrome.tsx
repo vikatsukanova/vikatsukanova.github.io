@@ -1,10 +1,6 @@
 import type { ReactNode } from 'react'
+import { navigate } from './navigation'
 import styles from './SiteChrome.module.css'
-
-export function navigate(href: string) {
-  window.history.pushState({}, '', href)
-  window.dispatchEvent(new PopStateEvent('popstate'))
-}
 
 function isActive(path: string, href: string) {
   if (href === '/') return path === '/' || path === '' || path.startsWith('/work/')

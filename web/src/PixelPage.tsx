@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from
 import { PixelMosaic, type PixelMosaicHandle } from './PixelMosaic'
 import styles from './PortfolioHome.module.css'
 import { PROJECTS } from './projects'
-import { navigate } from './SiteChrome'
+import { navigate } from './navigation'
 import { SiteHeader } from './SiteHeader'
 
 const ROLES = [
