@@ -1,7 +1,7 @@
 # Victoria Tsukanova — Portfolio
 
-[![Deploy](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/pages.yml/badge.svg)](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/pages.yml)
-[![CI](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/ci.yml)
+[![Deploy](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/pages.yml)
+[![CI](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/vikatsukanova/vikatsukanova.github.io/actions/workflows/ci.yml)
 
 Personal portfolio for **Victoria Tsukanova**, Senior Front-End Developer & UI/UX Designer based in Montreal, QC.
 

@@ -1,10 +1,10 @@
 name: CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
-  push:
-    branches-ignore: [main]
   schedule:
     # Weekly audit for newly disclosed vulnerabilities
     - cron: "0 9 * * 1"
