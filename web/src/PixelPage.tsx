@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
-import styles from './PixelPage.module.css'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react'
+import { PixelMosaic, type PixelMosaicHandle } from './PixelMosaic'
+import styles from './PortfolioHome.module.css'
 import { PROJECTS } from './projects'
+import { navigate } from './SiteChrome'
+import { SiteHeader } from './SiteHeader'
 
 const ROLES = [
   'a front-end developer',
@@ -11,15 +14,16 @@ const ROLES = [
 
 function useTypedRole(words: readonly string[]) {
   const [index, setIndex] = useState(0)
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? (words[0] ?? '')
+      : '',
+  )
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
-      setText(words[0] ?? '')
-      return
-    }
+    if (reduce) return
 
     const full = words[index] ?? ''
     if (!deleting && text === full) {
@@ -27,9 +31,11 @@ function useTypedRole(words: readonly string[]) {
       return () => window.clearTimeout(pause)
     }
     if (deleting && text === '') {
-      setDeleting(false)
-      setIndex((value) => (value + 1) % words.length)
-      return
+      const next = window.setTimeout(() => {
+        setDeleting(false)
+        setIndex((value) => (value + 1) % words.length)
+      }, 60)
+      return () => window.clearTimeout(next)
     }
 
     const delay = deleting ? 36 : 72
@@ -147,7 +153,7 @@ const STACK = [
     name: 'CSS',
     pixels: ['01111110', '11000011', '11000000', '01111100', '00000011', '11000011', '01111110', '00000000'],
   },
-]
+] as const
 
 const WORK_ART: Record<string, string> = {
   sidestage: '#e8e2d8',
@@ -168,6 +174,7 @@ function workFromProject(slug: string) {
     presentation: project.homePresentation ?? 'browser',
     slug: project.slug,
     href: project.caseStudyHref ?? `/work/${project.slug}`,
+    isSpaRoute: !project.caseStudyHref,
     stack: project.stack.slice(0, 3),
     summary: project.summary,
     artColor: WORK_ART[slug] ?? '#c9d6f5',
@@ -184,178 +191,449 @@ const WORK = [
   workFromProject('mission-blue'),
 ]
 
-const ACCENT = '#d9fa67'
+type WorkItem = (typeof WORK)[number]
+
+function handleSpaClick(event: MouseEvent<HTMLAnchorElement>, href: string, isSpaRoute: boolean) {
+  if (!isSpaRoute) return
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+    return
+  }
+  event.preventDefault()
+  navigate(href)
+  window.scrollTo({ top: 0, behavior: 'auto' })
+}
+
+function ProjectPreview({ item }: { item: WorkItem }) {
+  return (
+    <div className={styles.previewStage} style={{ backgroundColor: item.artColor }}>
+      <div className={styles.previewStageGrid} aria-hidden="true" />
+      {item.presentation === 'phone' ? (
+        <div className={styles.phoneFrame}>
+          <span className={styles.phoneNotch} aria-hidden="true" />
+          <img src={item.image} alt="" loading="lazy" />
+        </div>
+      ) : (
+        <div className={styles.browserFrame}>
+          <div className={styles.browserTop}>
+            <i />
+            <i />
+            <i />
+            <span>{item.label}</span>
+          </div>
+          <img src={item.image} alt="" loading="lazy" />
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function PixelPage() {
   const role = useTypedRole(ROLES)
+  const [heroAnimKey, setHeroAnimKey] = useState(0)
+
+  const pageRef = useRef<HTMLDivElement | null>(null)
+  const heroMosaicRef = useRef<PixelMosaicHandle | null>(null)
+  const trackWrapRef = useRef<HTMLDivElement | null>(null)
+  const trackRef = useRef<HTMLDivElement | null>(null)
+  const leftBtnRef = useRef<HTMLButtonElement | null>(null)
+  const rightBtnRef = useRef<HTMLButtonElement | null>(null)
+  const magBtnRef = useRef<HTMLAnchorElement | null>(null)
 
   useEffect(() => {
     document.title = 'Victoria Tsukanova'
+    const prevHtmlBg = document.documentElement.style.backgroundColor
+    const prevBodyBg = document.body.style.backgroundColor
+    document.documentElement.style.backgroundColor = '#F1F4F3'
+    document.body.style.backgroundColor = '#F1F4F3'
+    return () => {
+      document.documentElement.style.backgroundColor = prevHtmlBg
+      document.body.style.backgroundColor = prevBodyBg
+    }
   }, [])
 
+  // Scroll reveal observer
+  useEffect(() => {
+    const root = pageRef.current
+    if (!root) return
+
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal="true"]'))
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((item) => item.classList.add(styles.revealVisible))
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.revealVisible)
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' },
+    )
+
+    items.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
+
+  // Stack horizontal auto-scroll + arrow controls
+  useEffect(() => {
+    const trackWrap = trackWrapRef.current
+    const track = trackRef.current
+    const leftBtn = leftBtnRef.current
+    const rightBtn = rightBtnRef.current
+    if (!trackWrap || !track) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const originalCount = STACK.length
+    const getSingleSetWidth = () => {
+      const cards = track.querySelectorAll<HTMLElement>('[data-stack-card="true"]')
+      if (originalCount > 0 && cards[originalCount] && cards[0]) {
+        return cards[originalCount].offsetLeft - cards[0].offsetLeft
+      }
+      return track.scrollWidth / 3
+    }
+
+    let isPaused = false
+    let manualScrollTimer: number | null = null
+    let floatScroll = trackWrap.scrollLeft
+    let rafId = 0
+
+    const pauseTemporarily = (ms = 900) => {
+      isPaused = true
+      if (manualScrollTimer !== null) window.clearTimeout(manualScrollTimer)
+      manualScrollTimer = window.setTimeout(() => {
+        floatScroll = trackWrap.scrollLeft
+        isPaused = false
+      }, ms)
+    }
+
+    const onLeftClick = () => {
+      const singleSetWidth = getSingleSetWidth()
+      if (trackWrap.scrollLeft < 320 && singleSetWidth > 0) {
+        trackWrap.scrollLeft += singleSetWidth
+      }
+      pauseTemporarily(850)
+      trackWrap.scrollBy({ left: -320, behavior: 'smooth' })
+    }
+
+    const onRightClick = () => {
+      pauseTemporarily(850)
+      trackWrap.scrollBy({ left: 320, behavior: 'smooth' })
+    }
+
+    const onPointerEnter = () => {
+      isPaused = true
+    }
+
+    const onPointerLeave = () => {
+      floatScroll = trackWrap.scrollLeft
+      isPaused = false
+    }
+
+    const onTouchStart = () => {
+      isPaused = true
+    }
+
+    const onTouchEnd = () => {
+      pauseTemporarily(1200)
+    }
+
+    leftBtn?.addEventListener('click', onLeftClick)
+    rightBtn?.addEventListener('click', onRightClick)
+    trackWrap.addEventListener('pointerenter', onPointerEnter)
+    trackWrap.addEventListener('pointerleave', onPointerLeave)
+    trackWrap.addEventListener('touchstart', onTouchStart, { passive: true })
+    trackWrap.addEventListener('touchend', onTouchEnd, { passive: true })
+
+    if (!prefersReducedMotion) {
+      let lastTime = performance.now()
+      const step = (now: number) => {
+        const dt = Math.min(now - lastTime, 40)
+        lastTime = now
+
+        if (!isPaused) {
+          const singleSetWidth = getSingleSetWidth()
+          floatScroll += (dt / 1000) * 46
+          if (singleSetWidth > 0 && floatScroll >= singleSetWidth) {
+            floatScroll -= singleSetWidth
+          }
+          trackWrap.scrollLeft = floatScroll
+        }
+        rafId = window.requestAnimationFrame(step)
+      }
+      rafId = window.requestAnimationFrame(step)
+    }
+
+    return () => {
+      if (rafId) window.cancelAnimationFrame(rafId)
+      if (manualScrollTimer !== null) window.clearTimeout(manualScrollTimer)
+      leftBtn?.removeEventListener('click', onLeftClick)
+      rightBtn?.removeEventListener('click', onRightClick)
+      trackWrap.removeEventListener('pointerenter', onPointerEnter)
+      trackWrap.removeEventListener('pointerleave', onPointerLeave)
+      trackWrap.removeEventListener('touchstart', onTouchStart)
+      trackWrap.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [])
+
+  // Subtle magnetic pull on Hero CTA
+  useEffect(() => {
+    const magBtn = magBtnRef.current
+    if (!magBtn || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const onMove = (e: PointerEvent) => {
+      const rect = magBtn.getBoundingClientRect()
+      const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18
+      const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18
+      magBtn.style.transform = `translate(${dx}px, ${dy}px)`
+    }
+
+    const onLeave = () => {
+      magBtn.style.transform = ''
+    }
+
+    magBtn.addEventListener('pointermove', onMove)
+    magBtn.addEventListener('pointerleave', onLeave)
+    return () => {
+      magBtn.removeEventListener('pointermove', onMove)
+      magBtn.removeEventListener('pointerleave', onLeave)
+    }
+  }, [heroAnimKey])
+
+  const handleReplayHero = () => {
+    heroMosaicRef.current?.replay()
+    setHeroAnimKey((k) => k + 1)
+  }
+
   return (
-    <div className={styles.page} style={{ ['--accent' as string]: ACCENT }}>
+    <div ref={pageRef} className={styles.page}>
       <a className={styles.skip} href="#work">
         Skip to work
       </a>
 
-      <header className={styles.header}>
-        <a className={styles.brand} href="/" aria-label="Victoria Tsukanova homepage">
-          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="/about">About</a>
-          <div className={styles.navActions}>
-            <a className={styles.navButton} href="mailto:victoriatsukanova@gmail.com">
-              Say hi
-            </a>
-            <a
-              className={styles.navButton}
-              href="https://www.linkedin.com/in/victoriatsukanova"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a
-              className={styles.navButton}
-              href="/brand/CV_Victoria_Tsukanova.pdf"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Resume
-            </a>
-          </div>
-        </nav>
-      </header>
+      <SiteHeader currentPath="/" onLogoClick={handleReplayHero} />
 
-      <main className={styles.main}>
-        <section className={styles.hero} aria-label="Introduction">
-          <div className={styles.headline}>
-            <h1>
-              Hi, I&apos;m Vika
-              <span className={styles.typedLine}>
-                <span className={styles.typedRole} aria-live="polite">
-                  {role}
-                </span>
-                <span className={styles.caret} aria-hidden="true" />
-              </span>
-            </h1>
-          </div>
+      <main id="top">
+        {/* HERO SECTION WITH 40-COL INTERACTIVE PIXEL MOSAIC */}
+        <section className={styles.heroSection} aria-label="Introduction">
+          <div className={styles.heroMosaicWrap}>
+            <PixelMosaic
+              ref={heroMosaicRef}
+              grid="hero"
+              className={styles.heroPixelGrid}
+            />
 
-          <div className={styles.heroCopy}>
-            <p className={styles.roles}>
-              <span>Montreal, QC</span>
-            </p>
-            <p className={styles.lede}>
-              I bridge UI/UX design with technical implementation, specializing in scalable design
-              systems, modern React architectures, robust automated testing, AI-integrated
-              workflows and complex data interfaces.
-            </p>
-          </div>
-
-          <a className={styles.roundLink} href="#stack">
-            <span>Scroll down</span>
-            <b aria-hidden="true">↓</b>
-          </a>
-        </section>
-
-        <section className={styles.stackSection} id="stack">
-          <div className={styles.sectionLabel}>
-            <h2>
-              My Stack<span className={styles.smallStar}>✳</span>
-            </h2>
-            <span className={styles.eyebrow}>Tools I build with</span>
-          </div>
-          <div className={styles.stack}>
-            {STACK.map((item) => (
-              <div key={item.name} className={styles.icon}>
-                <div className={styles.iconBox}>
-                  <svg
-                    viewBox={`0 0 ${item.pixels[0].length} ${item.pixels.length}`}
-                    className={styles.iconSvg}
-                    aria-hidden="true"
-                  >
-                    {item.pixels.map((row, y) =>
-                      row.split('').map((cell, x) =>
-                        cell === '1' ? (
-                          <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" />
-                        ) : null,
-                      ),
-                    )}
-                  </svg>
-                </div>
-                <span className={styles.iconName}>{item.name}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.workSection} id="work">
-          <div className={styles.sectionLabel}>
-            <h2>
-              My Work<span className={styles.smallStar}>✳</span>
-            </h2>
-            <span className={styles.eyebrow}>Selected projects & builds</span>
-          </div>
-          <div className={styles.workGrid}>
-            {WORK.map((item, index) => (
-              <a key={item.label} className={styles.workCard} href={item.href}>
-                <div className={styles.workArt} style={{ background: item.artColor }}>
-                  <div className={styles.artGrid} aria-hidden="true" />
-                  <span className={styles.projectKicker}>
-                    {String(index + 1).padStart(2, '0')} / {item.label}
+            <div className={styles.heroContent} key={heroAnimKey}>
+              <h1 className={styles.heroTitle}>
+                <span className={styles.lineMask}>
+                  <span className={styles.lineInner} style={{ '--d': '0.28s' } as CSSProperties}>
+                    Hi, I&apos;m Vika
                   </span>
-                  {item.image ? (
-                    item.presentation === 'phone' ? (
-                      <div className={styles.phoneFrame}>
-                        <span className={styles.phoneNotch} aria-hidden="true" />
-                        <img src={item.image} alt="" />
-                      </div>
-                    ) : (
-                      <div className={styles.browserFrame}>
-                        <div className={styles.browserTop}>
-                          <i />
-                          <i />
-                          <i />
-                          <span>{item.label}</span>
-                        </div>
-                        <img src={item.image} alt="" />
-                      </div>
-                    )
-                  ) : (
-                    <div className={styles.workFrame} aria-hidden="true">
-                      +
-                    </div>
-                  )}
-                </div>
-                <div className={styles.projectInfo}>
-                  <div>
-                    <div className={styles.chips}>
-                      {item.stack.map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
-                    </div>
-                    <h3>{item.label}</h3>
-                    <p>{item.summary}</p>
-                  </div>
-                  <div className={styles.projectCta}>
-                    <span>View project</span>
-                    <b aria-hidden="true">↗</b>
-                  </div>
-                </div>
-              </a>
-            ))}
+                </span>
+                <span className={styles.lineMask}>
+                  <span
+                    className={`${styles.lineInner} ${styles.typedLine}`}
+                    style={{ '--d': '0.42s' } as CSSProperties}
+                  >
+                    <span className={styles.typedRole} aria-live="polite">
+                      {role}
+                    </span>
+                    <span className={styles.caret} aria-hidden="true" />
+                  </span>
+                </span>
+              </h1>
+              <div className={styles.heroCtaWrap}>
+                <a ref={magBtnRef} href="#work" className={styles.btnPrimary}>
+                  <span>Scroll down</span>
+                  <span className={styles.btnArrow} aria-hidden="true">
+                    ↓
+                  </span>
+                </a>
+              </div>
+            </div>
           </div>
         </section>
+
+        {/* MY STACK HORIZONTAL CAROUSEL */}
+        <section className={`${styles.section} ${styles.stackCarouselSection}`} id="stack">
+          <div className={styles.container}>
+            <p className={`${styles.sectionKicker} ${styles.revealItem}`} data-reveal="true">
+              Tools I build with
+            </p>
+            <div className={`${styles.sectionHeaderRow} ${styles.revealItem}`} data-reveal="true">
+              <h2 className={styles.sectionTitle}>My Stack</h2>
+              <div className={styles.scrollControls} aria-label="Stack carousel controls">
+                <button
+                  ref={leftBtnRef}
+                  type="button"
+                  className={styles.scrollBtn}
+                  aria-label="Scroll stack left"
+                >
+                  ←
+                </button>
+                <button
+                  ref={rightBtnRef}
+                  type="button"
+                  className={styles.scrollBtn}
+                  aria-label="Scroll stack right"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div ref={trackWrapRef} className={styles.stackTrackWrap}>
+            <div ref={trackRef} className={styles.stackTrack}>
+              {[0, 1, 2].map((copyIdx) =>
+                STACK.map((item) => (
+                  <article
+                    key={`${copyIdx}-${item.name}`}
+                    className={styles.stackCard}
+                    data-stack-card="true"
+                    aria-hidden={copyIdx > 0 || undefined}
+                  >
+                    <div className={styles.stackIconBox}>
+                      <svg
+                        viewBox={`0 0 ${item.pixels[0].length} ${item.pixels.length}`}
+                        className={styles.stackIconSvg}
+                        aria-hidden="true"
+                      >
+                        {item.pixels.map((row, y) =>
+                          row.split('').map((cell, x) =>
+                            cell === '1' ? (
+                              <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" />
+                            ) : null,
+                          ),
+                        )}
+                      </svg>
+                    </div>
+                    <h3 className={styles.stackCardTitle}>{item.name}</h3>
+                  </article>
+                )),
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* PIXEL DIVIDER */}
+        <div className={styles.pixelDividerWrap}>
+          <PixelMosaic grid="divider1" />
+        </div>
+
+        {/* MY WORK (SPLIT CARDS FOR ALL PROJECTS) */}
+        <section className={styles.caseStudiesSection} id="work">
+          <div className={styles.container}>
+            <p className={`${styles.sectionKicker} ${styles.revealItem}`} data-reveal="true">
+              Selected projects &amp; builds
+            </p>
+            <h2 className={`${styles.sectionTitle} ${styles.revealItem}`} data-reveal="true">
+              My Work
+            </h2>
+
+            <div className={styles.caseStudiesStack}>
+              {WORK.map((item, idx) => (
+                <a
+                  key={item.slug}
+                  href={item.href}
+                  className={`${styles.caseCard} ${styles.revealItem}`}
+                  style={{ '--stagger': Math.min(idx, 2) } as CSSProperties}
+                  data-reveal="true"
+                  onClick={(event) => handleSpaClick(event, item.href, item.isSpaRoute)}
+                >
+                  <div className={styles.caseVisualPane}>
+                    <ProjectPreview item={item} />
+                  </div>
+                  <div className={styles.caseBodyPane}>
+                    <span className={styles.caseTag}>
+                      {String(idx + 1).padStart(2, '0')} / {item.stack[0] ?? item.label}
+                    </span>
+                    <h3 className={styles.caseTitle}>{item.label}</h3>
+                    <p className={styles.caseSummary}>{item.summary}</p>
+                    <p className={styles.caseSubnote}>{item.stack.join(' · ')}</p>
+                    <span className={styles.caseLink}>
+                      <span>View project</span>
+                      <span className={styles.linkArrow} aria-hidden="true">
+                        ↗
+                      </span>
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FOOTER PIXEL HORIZON TRANSITION */}
+        <div className={styles.pixelHorizonWrap}>
+          <PixelMosaic grid="horizon" />
+        </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a className={styles.brand} href="#">
-          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
-        </a>
-        <span>© 2026 Victoria Tsukanova</span>
-        <a href="#">Back to the top ↑</a>
+      {/* GREEN CTA FOOTER */}
+      <footer className={styles.siteFooter}>
+        <div className={`${styles.container} ${styles.footerInner}`}>
+          <div>
+            <h2 className={styles.footerHeading}>Ways to get in touch</h2>
+            <a href="mailto:victoriatsukanova@gmail.com" className={styles.footerSayHi}>
+              <span>Say hi</span>
+              <span className={styles.footerArrow} aria-hidden="true">
+                →
+              </span>
+            </a>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <div className={styles.footerLinks}>
+              <a
+                href="/about"
+                className={styles.footerLink}
+                onClick={(event) => handleSpaClick(event, '/about', true)}
+              >
+                About
+              </a>
+              <a
+                href="https://www.linkedin.com/in/victoriatsukanova"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.footerLink}
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/vikatsukanova"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.footerLink}
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.behance.net/VictoriaTsukanova"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.footerLink}
+              >
+                Behance
+              </a>
+              <a
+                href="/brand/CV_Victoria_Tsukanova.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.footerLink}
+              >
+                Resume
+              </a>
+              <a href="#top" className={styles.footerLink}>
+                Back to the top ↑
+              </a>
+            </div>
+            <p className={styles.footerCopy}>© 2026 Victoria Tsukanova</p>
+          </div>
+        </div>
       </footer>
     </div>
   )

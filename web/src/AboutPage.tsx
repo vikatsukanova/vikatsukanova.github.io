@@ -1,8 +1,8 @@
-import { useEffect, useState, type ReactNode } from 'react'
-import page from './PixelPage.module.css'
+import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import styles from './AboutPage.module.css'
-
-const ACCENT = '#d9fa67'
+import { PixelMosaic } from './PixelMosaic'
+import { navigate } from './SiteChrome'
+import { SiteHeader } from './SiteHeader'
 
 type Job = {
   id: string
@@ -12,7 +12,6 @@ type Job = {
   location: string
   intro?: string
   callout?: string
-  scroll?: boolean
   groups?: { title: string; items: string[] }[]
   bullets?: string[]
 }
@@ -24,7 +23,6 @@ const JOBS: Job[] = [
     company: 'Pelmorex Corp',
     dates: 'Aug 2017 - Present',
     location: 'Toronto, Ontario, Canada - Remote',
-    scroll: true,
     intro:
       'Over 9 years, I drove front-end architecture for ad-tech and analytics platforms. Bridging design and engineering, I scaled legacy apps, built a Next.js BFF, and architected the shared component library.',
     groups: [
@@ -99,7 +97,8 @@ const JOBS: Job[] = [
     company: 'Original Fly',
     dates: 'Jul 2015',
     location: 'Toronto, Ontario, Canada',
-    intro: 'Responsible for website maintenance, adjustments and development of report web pages for applications.',
+    intro:
+      'Responsible for website maintenance, adjustments and development of report web pages for applications.',
   },
 ]
 
@@ -168,62 +167,82 @@ const SKILLS: { label: string; icon: ReactNode }[] = [
   },
 ]
 
+function handleSpaNav(event: MouseEvent<HTMLAnchorElement>, href: string) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+    return
+  }
+  event.preventDefault()
+  navigate(href)
+  window.scrollTo({ top: 0, behavior: 'auto' })
+}
+
 function JobCard({ job }: { job: Job }) {
   const [open, setOpen] = useState(false)
   const panelId = `${job.id}-panel`
 
   return (
-    <article className={page.card}>
+    <article className={styles.jobCard}>
       <button
         type="button"
-        className={page.cardButton}
+        className={styles.jobButton}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
       >
-        <span className={page.roleWrap}>
-          <span className={page.toggle} aria-hidden="true">
+        <span className={styles.jobRoleWrap}>
+          <span className={styles.jobToggle} aria-hidden="true">
             {open ? '[-]' : '[+]'}
           </span>
-          <span className={page.role}>{job.role}</span>
+          <span className={styles.jobRole}>{job.role}</span>
         </span>
-        <span className={page.meta}>
-          <span className={page.company}>{job.company}</span>
-          <span className={page.dates}>{job.dates}</span>
+        <span className={styles.jobMeta}>
+          <span className={styles.jobCompany}>{job.company}</span>
+          <span className={styles.jobDates}>{job.dates}</span>
         </span>
       </button>
-      <div id={panelId} className={open ? page.panelOpen : page.panel} aria-hidden={!open}>
-        <div className={job.scroll ? `${page.panelInner} ${page.panelScroll}` : page.panelInner}>
-          <p className={page.location}>{job.location}</p>
-          {job.intro ? <p className={page.intro}>{job.intro}</p> : null}
-          {job.callout ? <p className={page.callout}>{job.callout}</p> : null}
-          {job.groups ? (
-            <div className={page.groups}>
-              {job.groups.map((group) => (
-                <div key={group.title}>
-                  <h3 className={page.groupTitle}>{group.title}</h3>
-                  <ul className={page.bullets}>
-                    {group.items.map((item) => (
-                      <li key={item} className={page.bullet}>
-                        <span aria-hidden="true">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          ) : null}
-          {job.bullets ? (
-            <ul className={page.bullets}>
-              {job.bullets.map((item) => (
-                <li key={item} className={page.bullet}>
-                  <span aria-hidden="true">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+
+      <div
+        id={panelId}
+        className={open ? styles.jobPanelOpen : styles.jobPanel}
+        aria-hidden={!open}
+      >
+        <div className={styles.jobPanelClip}>
+          <div className={styles.jobPanelInner}>
+            <p className={styles.jobLocation}>{job.location}</p>
+            {job.intro ? <p className={styles.jobIntro}>{job.intro}</p> : null}
+            {job.callout ? <p className={styles.jobCallout}>{job.callout}</p> : null}
+            {job.groups ? (
+              <div className={styles.jobGroups}>
+                {job.groups.map((group) => (
+                  <div key={group.title}>
+                    <h3 className={styles.jobGroupTitle}>{group.title}</h3>
+                    <ul className={styles.jobBullets}>
+                      {group.items.map((item) => (
+                        <li key={item} className={styles.jobBullet}>
+                          <span className={styles.jobBulletDot} aria-hidden="true">
+                            •
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            {job.bullets ? (
+              <ul className={styles.jobBullets}>
+                {job.bullets.map((item) => (
+                  <li key={item} className={styles.jobBullet}>
+                    <span className={styles.jobBulletDot} aria-hidden="true">
+                      •
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
         </div>
       </div>
     </article>
@@ -233,147 +252,199 @@ function JobCard({ job }: { job: Job }) {
 export function AboutPage() {
   useEffect(() => {
     document.title = 'About — Victoria Tsukanova'
+    const prevHtmlBg = document.documentElement.style.backgroundColor
+    const prevBodyBg = document.body.style.backgroundColor
+    document.documentElement.style.backgroundColor = '#F1F4F3'
+    document.body.style.backgroundColor = '#F1F4F3'
+
     const id = window.location.hash.slice(1)
-    if (!id) return
-    requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
+    if (id) {
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    } else {
+      window.scrollTo(0, 0)
+    }
+
+    return () => {
+      document.documentElement.style.backgroundColor = prevHtmlBg
+      document.body.style.backgroundColor = prevBodyBg
+    }
   }, [])
 
   return (
-    <div className={page.page} style={{ ['--accent' as string]: ACCENT }}>
-      <a className={page.skip} href="#about">
+    <div className={styles.page}>
+      <a className={styles.skip} href="#about">
         Skip to about
       </a>
 
-      <header className={page.header}>
-        <a className={page.brand} href="/" aria-label="Victoria Tsukanova homepage">
-          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="/about" aria-current="page">
-            About
-          </a>
-          <div className={page.navActions}>
-            <a className={page.navButton} href="mailto:victoriatsukanova@gmail.com">
-              Say hi
-            </a>
-            <a
-              className={page.navButton}
-              href="https://www.linkedin.com/in/victoriatsukanova"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a
-              className={page.navButton}
-              href="/brand/CV_Victoria_Tsukanova.pdf"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Resume
-            </a>
-          </div>
-        </nav>
-      </header>
+      <SiteHeader currentPath="/about" />
 
-      <main className={`${page.main} ${styles.main}`} id="about">
-        <section className={styles.hero} aria-labelledby="about-heading">
-          <div className={styles.photoWrap}>
-            <div className={page.frame}>
+      <main id="about">
+        <div className={styles.inner}>
+          <section
+            className={`${styles.row} ${styles.rowLeadTop}`}
+            aria-labelledby="about-heading"
+          >
+            <div className={styles.portraitCard}>
               <img
-                className={page.photo}
+                className={styles.portraitImg}
                 src="/pixel-portrait.jpg?v=5"
                 alt="Victoria Tsukanova"
                 width={768}
                 height={1024}
               />
             </div>
-          </div>
-          <div className={styles.intro}>
-            <h1 id="about-heading">
-              More about me<span className={page.smallStar}>✳</span>
-            </h1>
-            <p>
-              My path started in visual and creative arts at Sheridan College, then moved into web
-              design — learning how typography, color, and layout become interfaces people actually
-              use. That curiosity pulled me deeper into front-end engineering: Full-Stack at Juno
-              College, JavaScript at HackerYou, and years of shipping production UI.
-            </p>
-            <p>
-              For the last nine years I&apos;ve worked as a UI/UX developer at Pelmorex, bridging
-              design and engineering on ad-tech and analytics platforms. Day to day that means design
-              systems and shared component libraries, data-dense dashboards, multi-step product
-              flows, and the craft of getting interface details right from Figma through React and
-              into testing.
-            </p>
-            <p>
-              Alongside product work, I still love branding and editorial design. Selected design
-              projects include Campshare, Cheese Factory, Racquet Science, Mission Blue, and a
-              clinical assessment interface; builds include Compass. Across all of it I care about
-              calm visual hierarchy, semantic color, and work that holds up from first mockup
-              through production UI.
-            </p>
-          </div>
-        </section>
 
-        <section className={styles.block}>
-          <h2>
-            Key skills<span className={page.smallStar}>✳</span>
-          </h2>
-          <ul className={styles.skills}>
-            {SKILLS.map((skill) => (
-              <li key={skill.label} className={styles.skill}>
-                <span className={styles.skillIcon}>{skill.icon}</span>
-                <span className={styles.skillLabel}>{skill.label}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <div className={page.split}>
-          <section className={page.col} id="experience">
-            <div className={page.sectionLabel}>
-              <h2>
-                Experience<span className={page.smallStar}>✳</span>
-              </h2>
-            </div>
-            <div className={page.cards}>
-              {JOBS.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))}
+            <div className={styles.rowBody}>
+              <h1 id="about-heading" className={styles.leadHeading}>
+                I bridge UI/UX design with technical implementation, specializing in scalable design
+                systems, modern React architectures, robust automated testing, AI-integrated
+                workflows and complex data interfaces.
+              </h1>
+              <p className={`${styles.body} ${styles.bodyMuted}`}>
+                My path started in visual and creative arts at Sheridan College, then moved into web
+                design — learning how typography, color, and layout become interfaces people actually
+                use. That curiosity pulled me deeper into front-end engineering: Full-Stack at Juno
+                College, JavaScript at HackerYou, and years of shipping production UI.
+              </p>
+              <p className={`${styles.body} ${styles.bodyMuted}`}>
+                For the last nine years I&apos;ve worked as a UI/UX developer at Pelmorex, bridging
+                design and engineering on ad-tech and analytics platforms. Day to day that means design
+                systems and shared component libraries, data-dense dashboards, multi-step product
+                flows, and the craft of getting interface details right from Figma through React and
+                into testing.
+              </p>
+              <p className={`${styles.body} ${styles.bodyMuted}`}>
+                Alongside product work, I still love branding and editorial design. Selected design
+                projects include Campshare, Cheese Factory, Racquet Science, Mission Blue, and a
+                clinical assessment interface; builds include Compass. Across all of it I care about
+                calm visual hierarchy, semantic color, and work that holds up from first mockup
+                through production UI.
+              </p>
             </div>
           </section>
 
-          <section className={page.col} id="education">
-            <div className={page.sectionLabel}>
-              <h2>
-                Education<span className={page.smallStar}>✳</span>
-              </h2>
-            </div>
-            <div className={page.cards}>
-              {EDUCATION.map((item) => (
-                <article key={`${item.school}-${item.program}`} className={page.eduCard}>
-                  <span className={page.program}>{item.program}</span>
-                  <span className={page.meta}>
-                    <span className={page.company}>{item.school}</span>
-                    <span className={page.dates}>{item.dates}</span>
-                  </span>
-                </article>
-              ))}
+          <section className={styles.row} id="skills" aria-labelledby="skills-heading">
+            <h2 id="skills-heading" className={styles.lab}>
+              Key skills
+            </h2>
+            <div className={styles.rowBody}>
+              <ul className={styles.skillsGrid}>
+                {SKILLS.map((skill) => (
+                  <li key={skill.label} className={styles.skillCard}>
+                    <span className={styles.skillIcon}>{skill.icon}</span>
+                    <span className={styles.skillLabel}>{skill.label}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
         </div>
+
+        <div className={styles.bandWrap}>
+          <PixelMosaic grid="caseMid" />
+        </div>
+
+        <div className={styles.inner}>
+          <section className={styles.row} id="experience" aria-labelledby="experience-heading">
+            <h2 id="experience-heading" className={styles.lab}>
+              Experience
+            </h2>
+            <div className={styles.rowBody}>
+              <div className={styles.jobList}>
+                {JOBS.map((job) => (
+                  <JobCard key={job.id} job={job} />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section
+            className={`${styles.row} ${styles.rowLast}`}
+            id="education"
+            aria-labelledby="education-heading"
+          >
+            <h2 id="education-heading" className={styles.lab}>
+              Education
+            </h2>
+            <div className={styles.rowBody}>
+              <div className={styles.eduGrid}>
+                {EDUCATION.map((item) => (
+                  <article key={`${item.school}-${item.program}`} className={styles.eduCard}>
+                    <span className={styles.eduProgram}>{item.program}</span>
+                    <span className={styles.eduMeta}>
+                      <span className={styles.eduSchool}>{item.school}</span>
+                      <span className={styles.eduDates}>{item.dates}</span>
+                    </span>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div className={`${styles.bandWrap} ${styles.bandWrapFooter}`}>
+          <PixelMosaic grid="caseFooter" />
+        </div>
       </main>
 
-      <footer className={page.footer}>
-        <a className={page.brand} href="/">
-          <img src="/brand/victoriatsukanova-logo.png" alt="" width={85} height={35} />
-        </a>
-        <span>© 2026 Victoria Tsukanova</span>
-        <a href="#about">Back to the top ↑</a>
+      <footer className={styles.siteFooter}>
+        <div className={styles.footerInner}>
+          <div>
+            <h2 className={styles.footerHeading}>Ways to get in touch</h2>
+            <a href="mailto:victoriatsukanova@gmail.com" className={styles.footerSayHi}>
+              <span>Say hi</span>
+              <span className={styles.footerArrow} aria-hidden="true">
+                →
+              </span>
+            </a>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <div className={styles.footerLinks}>
+              <a href="/" onClick={(event) => handleSpaNav(event, '/')}>
+                Work
+              </a>
+              <a
+                href="https://www.linkedin.com/in/victoriatsukanova"
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a href="https://github.com/vikatsukanova" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a
+                href="https://www.behance.net/VictoriaTsukanova"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Behance
+              </a>
+              <a href="/brand/CV_Victoria_Tsukanova.pdf" target="_blank" rel="noreferrer">
+                Resume
+              </a>
+              <a href="#about">Back to the top ↑</a>
+            </div>
+            <p className={styles.footerCopy}>© 2026 Victoria Tsukanova</p>
+          </div>
+        </div>
       </footer>
+
+      <svg className={styles.grain} aria-hidden="true">
+        <filter id="about-grain">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.9"
+            numOctaves="2"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#about-grain)" />
+      </svg>
     </div>
   )
 }

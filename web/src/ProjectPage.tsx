@@ -1,24 +1,26 @@
 import {
   createContext,
+  Fragment,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
-  type ReactNode,
+  type MouseEvent,
 } from 'react'
+import { PixelMosaic } from './PixelMosaic'
 import {
   BUILD_PROJECT_SLUGS,
   HOME_PROJECT_SLUGS,
   projectBySlug,
   type CaseStudyAtomicCard,
-  type CaseStudyChapter,
   type CaseStudyPrevNextSection,
   type CaseStudySection,
   type Project,
 } from './projects'
 import styles from './ProjectPage.module.css'
+import { navigate } from './SiteChrome'
+import { SiteHeader } from './SiteHeader'
 
 type LightboxShot = { src: string; alt: string }
 
@@ -91,11 +93,6 @@ function ZoomableShot({
   )
 }
 
-function navigate(href: string) {
-  window.history.pushState({}, '', href)
-  window.dispatchEvent(new PopStateEvent('popstate'))
-}
-
 const SWATCH: Record<string, string> = {
   critical: styles.swatch_critical,
   warning: styles.swatch_warning,
@@ -115,125 +112,16 @@ function slugify(value: string) {
     .replace(/^-|-$/g, '')
 }
 
-function padChapter(index: number) {
-  return String(index + 1).padStart(2, '0')
-}
-
-function chapterLabel(index: number, title: string) {
-  const cleaned = cleanTitle(title)
-  const short = cleaned.length > 22 ? `${cleaned.slice(0, 20)}…` : cleaned
-  return `${padChapter(index)} ${short}`
-}
-
-function isLeadGallery(section: CaseStudySection | undefined) {
-  return (
-    section?.kind === 'gallery' &&
-    !cleanTitle(section.title) &&
-    !section.title.toLowerCase().includes('wireframe')
-  )
-}
-
-function isNavSection(section: CaseStudySection) {
-  if (section.kind === 'prevNext') return false
-  if (!('title' in section)) return false
-  return Boolean(cleanTitle(section.title))
-}
-
-function deriveChapters(sections: readonly CaseStudySection[]): CaseStudyChapter[] {
-  const chapters: CaseStudyChapter[] = []
-  const used = new Set<string>()
-
-  sections.forEach((section) => {
-    if (!isNavSection(section) || !('title' in section)) return
-    const title = cleanTitle(section.title)
-    let id = slugify(title) || `section-${chapters.length + 1}`
-    if (used.has(id)) id = `${id}-${chapters.length + 1}`
-    used.add(id)
-    chapters.push({ id, label: chapterLabel(chapters.length, title) })
-  })
-
-  return chapters
-}
-
-function sectionChapterId(
-  section: CaseStudySection,
-  chapters: readonly CaseStudyChapter[],
-  titledIndex: number,
-) {
-  if (!isNavSection(section)) return undefined
-  return chapters[titledIndex]?.id
-}
-
-function Headline({
-  text,
-  emphasis,
-  fallback,
-}: {
-  text?: string
-  emphasis?: string
-  fallback: string
-}) {
-  const source = text?.trim() || fallback
-  const lines = source.split('\n')
-
-  return (
-    <h1 className={styles.title}>
-      {lines.map((line, lineIndex) => {
-        const nodes: ReactNode[] = []
-        if (emphasis && line.includes(emphasis)) {
-          const parts = line.split(emphasis)
-          parts.forEach((part, partIndex) => {
-            if (part) nodes.push(part)
-            if (partIndex < parts.length - 1) {
-              nodes.push(
-                <em key={`${lineIndex}-${partIndex}`} className={styles.titleEm}>
-                  {emphasis}
-                </em>,
-              )
-            }
-          })
-        } else {
-          nodes.push(line)
-        }
-
-        return (
-          <span key={lineIndex}>
-            {lineIndex > 0 ? <br /> : null}
-            {nodes}
-          </span>
-        )
-      })}
-    </h1>
-  )
-}
-
-function SplitHeader({
-  index,
-  title,
-  children,
-}: {
-  index: number
-  title: string
-  children?: ReactNode
-}) {
-  const cleaned = cleanTitle(title)
-  if (!cleaned && !children) return null
-
-  return (
-    <div className={styles.split}>
-      <div>
-        {cleaned ? (
-          <>
-            <span className={styles.eyebrow}>
-              {padChapter(index)} / {cleaned}
-            </span>
-            <h2 className={styles.heading}>{cleaned}</h2>
-          </>
-        ) : null}
-      </div>
-      <div>{children}</div>
-    </div>
-  )
+function handleProjectNav(event: MouseEvent<HTMLAnchorElement>, href: string) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+    return
+  }
+  if (href.startsWith('/demos/') || href.startsWith('http') || href.startsWith('mailto:')) {
+    return
+  }
+  event.preventDefault()
+  navigate(href)
+  window.scrollTo({ top: 0, behavior: 'auto' })
 }
 
 function AtomicPreview({ preview }: { preview: CaseStudyAtomicCard['preview'] }) {
@@ -251,7 +139,7 @@ function AtomicPreview({ preview }: { preview: CaseStudyAtomicCard['preview'] })
 
   if (preview === 'molecules') {
     return (
-      <div className={styles.metricCard}>
+      <div className={styles.previewBox}>
         <div className={styles.metricTop}>
           <div>
             <p className={styles.metricTitle}>LDL-C</p>
@@ -267,7 +155,7 @@ function AtomicPreview({ preview }: { preview: CaseStudyAtomicCard['preview'] })
   }
 
   return (
-    <div className={styles.organismPreview}>
+    <div className={styles.previewBox}>
       <div className={styles.organismRow}>
         <span className={styles.organismAvatar} />
         <span className={styles.organismLines}>
@@ -279,180 +167,187 @@ function AtomicPreview({ preview }: { preview: CaseStudyAtomicCard['preview'] })
   )
 }
 
-function CaseStudyBlock({
+function CaseStudyRow({
   section,
-  chapterIndex,
-  sectionId,
+  isFirst,
+  isLast,
 }: {
   section: CaseStudySection
-  chapterIndex: number
-  sectionId?: string
+  isFirst: boolean
+  isLast: boolean
 }) {
   if (section.kind === 'prevNext') return null
 
-  const titled = isNavSection(section)
-  const index = titled ? chapterIndex : -1
+  const label = 'title' in section ? cleanTitle(section.title) : ''
+  const id = label ? slugify(label) : undefined
+  const rowClasses = `${styles.row} ${isFirst ? styles.rowLeadTop : ''} ${
+    isLast ? styles.rowLast : ''
+  }`
 
   switch (section.kind) {
     case 'prose':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title}>
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Overview'}</span>
+          <div className={styles.rowBody}>
             {section.body.map((paragraph, i) => (
-              <p key={paragraph} className={i === 0 ? styles.lead : styles.body}>
+              <p
+                key={paragraph}
+                className={i === 0 ? styles.body : `${styles.body} ${styles.bodyMuted}`}
+              >
                 {paragraph}
               </p>
             ))}
-          </SplitHeader>
+          </div>
         </section>
       )
 
     case 'gallery': {
-      const isWireframes = section.title.toLowerCase().includes('wireframe')
-      const gallery = (
-        <div
-          className={`${styles.gallery} ${
-            section.layout === 'long'
-              ? styles.galleryLong
-              : section.layout === 'stack'
-                ? styles.galleryStack
-                : styles.galleryRow
-          }`}
-        >
-          {section.images.map((image) => (
-            <figure key={image.src} className={styles.galleryItem}>
-              <ZoomableShot src={image.src} alt={image.alt} loading="lazy" />
-              {image.caption ? <figcaption>{image.caption}</figcaption> : null}
-            </figure>
-          ))}
-        </div>
-      )
-
-      if (!titled) {
-        return (
-          <section className={`${styles.section} ${styles.sectionLead}`}>
-            {section.intro ? <p className={styles.lead}>{section.intro}</p> : null}
-            {gallery}
-          </section>
-        )
-      }
+      const count = section.images.length
+      const gridClass =
+        section.layout === 'long'
+          ? `${styles.galleryGrid} ${styles.galleryLong}`
+          : count === 1 || section.layout === 'stack'
+            ? `${styles.galleryGrid} ${styles.gallerySingle}`
+            : count === 2 || count === 4
+              ? `${styles.galleryGrid} ${styles.galleryTwo}`
+              : styles.galleryGrid
 
       return (
-        <section
-          className={`${styles.section} ${isWireframes ? styles.wireframes : ''}`}
-          id={sectionId}
-        >
-          <SplitHeader index={index} title={section.title}>
-            {section.intro ? <p className={styles.lead}>{section.intro}</p> : null}
-          </SplitHeader>
-          {gallery}
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Screens'}</span>
+          <div className={styles.rowBody}>
+            {section.intro ? <p className={styles.body}>{section.intro}</p> : null}
+            <div className={gridClass}>
+              {section.images.map((image) => (
+                <figure key={image.src} className={styles.galleryFigure}>
+                  <div className={styles.card}>
+                    <ZoomableShot src={image.src} alt={image.alt} loading="lazy" />
+                  </div>
+                  {image.caption ? <figcaption>{image.caption}</figcaption> : null}
+                </figure>
+              ))}
+            </div>
+          </div>
         </section>
       )
     }
 
     case 'typography':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title} />
-          <div className={styles.typeSpecimens}>
-            {section.fonts.map((font) => (
-              <div key={font.name} className={styles.fontCard} style={{ fontFamily: font.family }}>
-                <p className={styles.fontBig}>Aa</p>
-                <p className={styles.fontName}>{font.name}</p>
-                <p className={styles.fontDetails}>
-                  abcdefghijklmnopqrstuvwxyz
-                  <br />
-                  ABCDEFGHIJKLMNOPQRSTUVWXYZ
-                  <br />
-                  1234567890
-                </p>
-              </div>
-            ))}
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Typography'}</span>
+          <div className={styles.rowBody}>
+            <div className={styles.typeGrid}>
+              {section.fonts.map((font) => (
+                <div
+                  key={font.name}
+                  className={styles.panel}
+                  style={{ fontFamily: font.family }}
+                >
+                  <p className={styles.fontBig}>Aa</p>
+                  <p className={`${styles.lab} ${styles.fontName}`}>{font.name}</p>
+                  <p className={styles.fontDetails}>
+                    abcdefghijklmnopqrstuvwxyz
+                    <br />
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                    <br />
+                    1234567890
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )
 
     case 'tokenGrid':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title}>
-            {section.intro?.map((paragraph, i) => (
-              <p key={paragraph} className={i === 0 ? styles.lead : styles.body}>
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Tokens'}</span>
+          <div className={styles.rowBody}>
+            {section.intro?.map((paragraph) => (
+              <p key={paragraph} className={styles.body}>
                 {paragraph}
               </p>
             ))}
-          </SplitHeader>
-          <div className={styles.colors}>
-            {section.tokens.map((token) => (
-              <div key={token.label} className={styles.colorSet}>
-                <div
-                  className={`${styles.color} ${token.swatch ? SWATCH[token.swatch] ?? '' : ''}`}
-                  style={token.hex ? { background: token.hex } : undefined}
-                  aria-hidden="true"
-                />
-                <p>{token.detail}</p>
+            <div className={styles.panel}>
+              <div className={styles.tokGrid}>
+                {section.tokens.map((token) => (
+                  <div key={token.label} className={styles.tok}>
+                    <span
+                      className={`${styles.tokSwatch} ${
+                        token.swatch ? (SWATCH[token.swatch] ?? '') : ''
+                      }`}
+                      style={token.hex ? { background: token.hex } : undefined}
+                      aria-hidden="true"
+                    />
+                    <span className={styles.tokLabel}>{token.label}</span>
+                    {token.detail && token.detail !== token.label ? (
+                      <span className={styles.tokDetail}>{token.detail}</span>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          {section.typeScale?.length ? (
-            <div className={styles.typeScale}>
-              {section.typeScale.map((row) => (
-                <div key={row.token} className={styles.typeRow}>
-                  <span className={styles.typeSample} data-level={row.label}>
-                    {row.sample}
-                  </span>
-                  <span className={styles.tokenDetail}>{row.token}</span>
-                </div>
-              ))}
             </div>
-          ) : null}
+            {section.typeScale?.length ? (
+              <div className={`${styles.panel} ${styles.typeScale}`}>
+                {section.typeScale.map((row) => (
+                  <div key={row.token} className={styles.typeScaleRow}>
+                    <span className={styles.typeScaleMeta}>
+                      {row.label} · {row.token}
+                    </span>
+                    <span className={styles.typeSample} data-level={row.label}>
+                      {row.sample}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </section>
       )
 
     case 'logo':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title} />
-          <div className={styles.logoPanel}>
-            <ZoomableShot src={section.src} alt={section.alt} />
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Logo'}</span>
+          <div className={styles.rowBody}>
+            <div className={styles.logoPanel}>
+              <ZoomableShot src={section.src} alt={section.alt} />
+            </div>
           </div>
         </section>
       )
 
     case 'featureSplit':
       return (
-        <section
-          className={`${styles.section} ${styles.featureSplit} ${
-            section.tone === 'muted' ? styles.featureMuted : ''
-          } ${section.imageSide === 'right' ? styles.featureImageRight : ''}`}
-          id={sectionId}
-        >
-          {titled ? <SplitHeader index={index} title={section.title} /> : null}
-          <div className={styles.featureGrid}>
-            <figure className={styles.featureImage}>
-              <ZoomableShot
-                src={section.image.src}
-                alt={section.image.alt}
-                loading="lazy"
-              />
-            </figure>
-            <div className={styles.featureCopy}>
-              {section.lead ? <p className={styles.featureLead}>{section.lead}</p> : null}
-              {section.body?.map((paragraph) => (
-                <p key={paragraph} className={styles.body}>
-                  {paragraph}
-                </p>
-              ))}
-              {section.bullets?.length ? (
-                <ul className={styles.list}>
-                  {section.bullets.map((item) => (
-                    <li key={item}>
-                      <span aria-hidden="true">—</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Feature'}</span>
+          <div className={styles.rowBody}>
+            <div
+              className={`${styles.featurePanel} ${
+                section.imageSide === 'right' ? styles.featurePanelRight : ''
+              }`}
+            >
+              <figure className={styles.featureMedia}>
+                <ZoomableShot src={section.image.src} alt={section.image.alt} loading="lazy" />
+              </figure>
+              <div className={styles.featureCopy}>
+                {section.lead ? <h3 className={styles.featureLead}>{section.lead}</h3> : null}
+                {section.body?.map((paragraph) => (
+                  <p key={paragraph} className={styles.featureText}>
+                    {paragraph}
+                  </p>
+                ))}
+                {section.bullets?.length ? (
+                  <ul className={styles.featureBullets}>
+                    {section.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
             </div>
           </div>
         </section>
@@ -460,54 +355,55 @@ function CaseStudyBlock({
 
     case 'atomicCards':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title}>
-            <p className={styles.lead}>{section.intro}</p>
-          </SplitHeader>
-          <div className={styles.atomicGrid}>
-            {section.cards.map((card) => (
-              <article key={card.title} className={styles.atomicCard}>
-                <h3>{card.title}</h3>
-                <p>{card.body}</p>
-                <AtomicPreview preview={card.preview} />
-              </article>
-            ))}
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Components'}</span>
+          <div className={styles.rowBody}>
+            <p className={styles.body}>{section.intro}</p>
+            <div className={styles.atomicGrid}>
+              {section.cards.map((card) => (
+                <article key={card.title} className={styles.atomicCard}>
+                  <h3>{card.title}</h3>
+                  <p>{card.body}</p>
+                  <AtomicPreview preview={card.preview} />
+                </article>
+              ))}
+            </div>
           </div>
         </section>
       )
 
     case 'numberedList':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title} />
-          <ol className={styles.numbered}>
-            {section.items.map((item, itemIndex) => (
-              <li key={item.title}>
-                <span className={styles.num}>{itemIndex + 1}</span>
-                <div>
-                  <h3>{item.title}</h3>
-                  <p className={styles.body}>{item.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Highlights'}</span>
+          <div className={styles.rowBody}>
+            <div className={styles.statGrid}>
+              {section.items.map((item, itemIndex) => (
+                <article key={item.title} className={styles.statCard}>
+                  <span className={styles.statNum}>
+                    {String(itemIndex + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className={styles.statTitle}>{item.title}</h3>
+                  <p className={styles.statDesc}>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
       )
 
     case 'dx':
       return (
-        <section className={styles.section} id={sectionId}>
-          <SplitHeader index={index} title={section.title}>
-            <p className={styles.lead}>{section.body}</p>
-          </SplitHeader>
-          <ul className={styles.list}>
-            {section.points.map((point) => (
-              <li key={point}>
-                <span aria-hidden="true">—</span>
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
+        <section className={rowClasses} id={id}>
+          <span className={styles.lab}>{label || 'Engineering'}</span>
+          <div className={styles.rowBody}>
+            <p className={styles.body}>{section.body}</p>
+            <ul className={styles.bodyList}>
+              {section.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </div>
         </section>
       )
 
@@ -520,35 +416,35 @@ function ThinProjectBody({ project }: { project: Project }) {
   return (
     <>
       {project.features.length ? (
-        <section className={styles.section} id="features">
-          <SplitHeader index={0} title="What it does">
-            <ul className={styles.list}>
+        <section className={`${styles.row} ${styles.rowLeadTop}`} id="features">
+          <span className={styles.lab}>What it does</span>
+          <div className={styles.rowBody}>
+            <ul className={styles.bodyList}>
               {project.features.map((item) => (
-                <li key={item}>
-                  <span aria-hidden="true">—</span>
-                  <span>{item}</span>
-                </li>
+                <li key={item}>{item}</li>
               ))}
             </ul>
-          </SplitHeader>
+          </div>
         </section>
       ) : null}
       {project.built.length ? (
-        <section className={styles.section} id="built">
-          <SplitHeader index={project.features.length ? 1 : 0} title="How it was built">
-            <ul className={styles.list}>
+        <section className={`${styles.row} ${styles.rowLast}`} id="built">
+          <span className={styles.lab}>How it was built</span>
+          <div className={styles.rowBody}>
+            <ul className={styles.bodyList}>
               {project.built.map((item) => (
-                <li key={item}>
-                  <span aria-hidden="true">—</span>
-                  <span>{item}</span>
-                </li>
+                <li key={item}>{item}</li>
               ))}
             </ul>
-          </SplitHeader>
+          </div>
         </section>
       ) : null}
     </>
   )
+}
+
+function projectHref(slug: string) {
+  return projectBySlug(slug)?.caseStudyHref ?? `/work/${slug}`
 }
 
 function neighborsFor(slug: string, explicit?: CaseStudyPrevNextSection) {
@@ -556,313 +452,272 @@ function neighborsFor(slug: string, explicit?: CaseStudyPrevNextSection) {
     projectBySlug(item),
   )
   const index = order.indexOf(slug as (typeof order)[number])
-  const fromOrder =
-    index >= 0
-      ? {
-          previous: index > 0 ? { slug: order[index - 1] } : undefined,
-          next: index < order.length - 1 ? { slug: order[index + 1] } : undefined,
-        }
-      : { previous: undefined, next: undefined }
+  const prevSlug =
+    explicit?.previous?.slug ??
+    (index > 0 ? order[index - 1] : order[order.length - 1])
+  const nextSlug =
+    explicit?.next?.slug ??
+    (index >= 0 && index < order.length - 1 ? order[index + 1] : order[0])
 
   return {
-    previous: explicit?.previous ?? fromOrder.previous,
-    next: explicit?.next ?? fromOrder.next,
+    index: index >= 0 ? index + 1 : 1,
+    previous: prevSlug && prevSlug !== slug ? projectBySlug(prevSlug) : undefined,
+    next: nextSlug && nextSlug !== slug ? projectBySlug(nextSlug) : undefined,
   }
 }
 
-function useChapterObserver(chapterIds: readonly string[]) {
-  const [activeId, setActiveId] = useState(chapterIds[0] ?? '')
-  const navRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    if (!chapterIds.length) return
-
-    const sections = chapterIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el))
-
-    if (!sections.length) return
-
-    const setActive = (id: string) => {
-      setActiveId(id)
-      const nav = navRef.current
-      if (!nav) return
-      nav.querySelectorAll('a[href^="#"]').forEach((link) => {
-        const active = link.getAttribute('href') === `#${id}`
-        link.classList.toggle(styles.chapterActive, active)
-      })
-    }
-
-    setActive(chapterIds[0])
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-        if (visible[0]?.target.id) setActive(visible[0].target.id)
-      },
-      { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.25, 0.5] },
-    )
-
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
-  }, [chapterIds])
-
-  return { activeId, navRef }
-}
-
-export function ProjectPage({ slug }: { slug: string }) {
+function ProjectPageInner({ slug }: { slug: string }) {
   const project = projectBySlug(slug)
   const [lightbox, setLightbox] = useState<LightboxShot | null>(null)
+
   const openLightbox = useCallback((shot: LightboxShot) => setLightbox(shot), [])
   const closeLightbox = useCallback(() => setLightbox(null), [])
 
   useEffect(() => {
     document.title = project ? `${project.label} — Victoria Tsukanova` : 'Victoria Tsukanova'
     window.scrollTo(0, 0)
+
+    const prevHtmlBg = document.documentElement.style.backgroundColor
+    const prevBodyBg = document.body.style.backgroundColor
+    document.documentElement.style.backgroundColor = '#F1F4F3'
+    document.body.style.backgroundColor = '#F1F4F3'
+    return () => {
+      document.documentElement.style.backgroundColor = prevHtmlBg
+      document.body.style.backgroundColor = prevBodyBg
+    }
   }, [project])
 
-  useEffect(() => {
-    setLightbox(null)
-  }, [slug])
-
-  const sections = project?.caseStudy?.sections ?? []
-  const first = sections[0]
-  const leadGallery = isLeadGallery(first) ? first : undefined
-  const contentSections = leadGallery ? sections.slice(1) : sections
-  const explicitPrevNext = sections.find(
+  const allSections = project?.caseStudy?.sections ?? []
+  const explicitPrevNext = allSections.find(
     (section): section is CaseStudyPrevNextSection => section.kind === 'prevNext',
   )
-
-  const chapters = useMemo(() => {
-    if (!project) return []
-    if (project.caseStudy?.chapters?.length) return [...project.caseStudy.chapters]
-    if (project.caseStudy) {
-      const all = project.caseStudy.sections
-      const lead = isLeadGallery(all[0])
-      return deriveChapters(lead ? all.slice(1) : all)
-    }
-    const thin: CaseStudyChapter[] = []
-    if (project.features.length) thin.push({ id: 'features', label: '01 Features' })
-    if (project.built.length) {
-      thin.push({
-        id: 'built',
-        label: `${padChapter(thin.length)} Build`,
-      })
-    }
-    return thin
-  }, [project])
-
-  const chapterIds = useMemo(() => chapters.map((chapter) => chapter.id), [chapters])
-  const { activeId, navRef } = useChapterObserver(chapterIds)
+  const visibleSections = allSections.filter((section) => section.kind !== 'prevNext')
   const neighbors = neighborsFor(slug, explicitPrevNext)
 
-  const eyebrow = project
-    ? `${project.label} · ${project.stack[0] ?? 'Product Design'}`
-    : ''
-
-  let titledCursor = -1
+  // Place the mid-page pixel band after the opening narrative/gallery section(s)
+  const midBandIndex = visibleSections.length >= 4 ? 2 : -1
 
   return (
     <LightboxContext.Provider value={openLightbox}>
-    <div className={styles.page}>
-      <a className={styles.skip} href="#main">
-        Skip to content
-      </a>
-      <main id="main" className={styles.main}>
-        {project ? (
-          <>
-            <section className={styles.hero}>
-              <a
-                className={styles.back}
-                href="/"
-                onClick={(event) => {
-                  event.preventDefault()
-                  navigate('/')
-                }}
-              >
-                ← Home
-              </a>
-              <div className={styles.eyebrow}>{eyebrow}</div>
-              <div className={styles.heroline}>
-                <div className={styles.heroCopy}>
-                  <Headline
-                    text={project.caseStudy?.headline}
-                    emphasis={project.caseStudy?.headlineEmphasis}
-                    fallback={project.label}
-                  />
-                  <p className={styles.intro}>
-                    {project.caseStudy?.outcome ?? project.summary}
-                  </p>
-                  <dl className={styles.meta}>
-                    {project.role ? (
-                      <div>
-                        <dt>Role</dt>
-                        <dd>{project.role}</dd>
-                      </div>
-                    ) : null}
-                    {project.client ? (
-                      <div>
-                        <dt>Client</dt>
-                        <dd>{project.client}</dd>
-                      </div>
-                    ) : null}
-                    {project.collaborators ? (
-                      <div>
-                        <dt>Collaborators</dt>
-                        <dd>{project.collaborators}</dd>
-                      </div>
-                    ) : null}
-                  </dl>
-                  {project.site ? (
+      <div className={styles.page}>
+        <a className={styles.skip} href="#main">
+          Skip to content
+        </a>
+
+        <SiteHeader currentPath="/work" />
+
+        <main id="main">
+          {project ? (
+            <>
+              <div className={styles.inner}>
+                <section
+                  className={styles.heroSplit}
+                  aria-label={`${project.label} overview`}
+                >
+                  <div className={styles.heroCopy}>
                     <a
-                      className={styles.launch}
-                      href={project.site}
-                      target={project.site.startsWith('http') ? '_blank' : undefined}
-                      rel={project.site.startsWith('http') ? 'noreferrer' : undefined}
+                      className={`${styles.lab} ${styles.ul} ${styles.heroBack}`}
+                      href="/"
+                      onClick={(event) => handleProjectNav(event, '/')}
                     >
-                      {project.site.startsWith('http') ? 'Launch demo' : 'Launch site'}
+                      ← All work
                     </a>
+                    <div className={styles.heroKickerRow}>
+                      <span className={`${styles.lab} ${styles.heroKicker}`}>
+                        Case study {String(neighbors.index).padStart(2, '0')}
+                        {project.stack[0] ? ` · ${project.stack[0]}` : ''}
+                      </span>
+                    </div>
+                    <h1 className={styles.title}>{project.label}</h1>
+                    <p className={styles.subtitle}>
+                      {project.caseStudy?.outcome ?? project.summary}
+                    </p>
+                    {project.site ? (
+                      <div className={styles.heroActions}>
+                        <a
+                          className={styles.heroPrimaryBtn}
+                          href={project.site}
+                          target={project.site.startsWith('http') ? '_blank' : undefined}
+                          rel={project.site.startsWith('http') ? 'noreferrer' : undefined}
+                        >
+                          {project.site.startsWith('http') ? 'Launch demo ↗' : 'Launch site ↗'}
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <figure className={styles.heroMediaCard}>
+                    <ZoomableShot
+                      src={project.image}
+                      alt={`${project.label} hero mockup`}
+                      label={`Expand ${project.label} mockup`}
+                      loading="eager"
+                    />
+                  </figure>
+                </section>
+
+                <div className={styles.metaBar}>
+                  {project.role ? (
+                    <div className={styles.metaItem}>
+                      <span className={styles.lab}>Role</span>
+                      <span>{project.role}</span>
+                    </div>
+                  ) : null}
+                  {project.stack.length ? (
+                    <div className={styles.metaItem}>
+                      <span className={styles.lab}>Stack</span>
+                      <span>{project.stack.join(' · ')}</span>
+                    </div>
+                  ) : null}
+                  {project.client ? (
+                    <div className={styles.metaItem}>
+                      <span className={styles.lab}>Client</span>
+                      <span>{project.client}</span>
+                    </div>
+                  ) : null}
+                  {project.collaborators ? (
+                    <div className={styles.metaItem}>
+                      <span className={styles.lab}>Collaborators</span>
+                      <span>{project.collaborators}</span>
+                    </div>
+                  ) : null}
+                  {project.site ? (
+                    <div className={styles.metaItem}>
+                      <span className={styles.lab}>Links</span>
+                      <div className={styles.metaLinks}>
+                        <a
+                          className={styles.ul}
+                          href={project.site}
+                          target={project.site.startsWith('http') ? '_blank' : undefined}
+                          rel={project.site.startsWith('http') ? 'noreferrer' : undefined}
+                        >
+                          {project.site.startsWith('http') ? 'Launch demo ↗' : 'Launch site ↗'}
+                        </a>
+                      </div>
+                    </div>
                   ) : null}
                 </div>
-                <figure className={styles.heroShot}>
-                  <ZoomableShot
-                    src={project.image}
-                    alt=""
-                    label={`Expand ${project.label} mockup`}
-                  />
-                </figure>
               </div>
-            </section>
 
-            {project.caseStudy?.preface ? (
-              <div className={styles.contextPreface}>
-                <span className={styles.eyebrow}>Preface</span>
-                <p className={styles.contextIntro}>{project.caseStudy.preface}</p>
+              {/* 4-row pixel band transitioning into the case study body */}
+              <div className={`${styles.bandWrap} ${styles.bandWrapTop}`}>
+                <PixelMosaic grid="caseTop" />
               </div>
-            ) : null}
 
-            <div className={styles.caseLayout}>
-              {chapters.length ? (
-                <nav
-                  ref={navRef}
-                  className={styles.chapterNav}
-                  aria-label="Case study chapters"
-                >
-                  {chapters.map((chapter) => (
-                    <a
-                      key={chapter.id}
-                      href={`#${chapter.id}`}
-                      className={activeId === chapter.id ? styles.chapterActive : undefined}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        document.getElementById(chapter.id)?.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start',
-                        })
-                      }}
-                    >
-                      {chapter.label}
-                    </a>
-                  ))}
-                </nav>
+              {project.caseStudy?.preface ? (
+                <div className={styles.inner}>
+                  <section className={`${styles.row} ${styles.rowLeadTop}`} id="preface">
+                    <span className={styles.lab}>Preface</span>
+                    <div className={styles.rowBody}>
+                      <p className={styles.body}>{project.caseStudy.preface}</p>
+                    </div>
+                  </section>
+                </div>
+              ) : null}
+
+              {project.caseStudy ? (
+                visibleSections.map((section, index) => {
+                  const isFirst = index === 0 && !project.caseStudy?.preface
+                  const isLast = index === visibleSections.length - 1
+                  return (
+                    <Fragment key={`${section.kind}-${index}`}>
+                      {index === midBandIndex ? (
+                        <div className={styles.bandWrap}>
+                          <PixelMosaic grid="caseMid" />
+                        </div>
+                      ) : null}
+                      <div className={styles.inner}>
+                        <CaseStudyRow
+                          section={section}
+                          isFirst={isFirst}
+                          isLast={isLast}
+                        />
+                      </div>
+                    </Fragment>
+                  )
+                })
               ) : (
-                <div />
+                <div className={styles.inner}>
+                  <ThinProjectBody project={project} />
+                </div>
               )}
 
-              <div className={styles.caseContent}>
-                {leadGallery ? (
-                  <CaseStudyBlock section={leadGallery} chapterIndex={-1} />
-                ) : null}
+              {/* 6-row pixel band transitioning into the green Next case study footer */}
+              <div className={`${styles.bandWrap} ${styles.bandWrapFooter}`}>
+                <PixelMosaic grid="caseFooter" />
+              </div>
 
-                {project.caseStudy ? (
-                  contentSections.map((section, index) => {
-                    if (isNavSection(section)) titledCursor += 1
-                    const chapterIndex = titledCursor
-                    const sectionId = sectionChapterId(section, chapters, chapterIndex)
-                    return (
-                      <CaseStudyBlock
-                        key={`${section.kind}-${index}`}
-                        section={section}
-                        chapterIndex={chapterIndex}
-                        sectionId={sectionId}
-                      />
-                    )
-                  })
+              <footer className={styles.footerBannerWrap}>
+                {neighbors.next ? (
+                  <a
+                    className={styles.nextBanner}
+                    href={projectHref(neighbors.next.slug)}
+                    onClick={(event) =>
+                      handleProjectNav(event, projectHref(neighbors.next!.slug))
+                    }
+                  >
+                    <span className={styles.lab}>Next case study</span>
+                    <span className={styles.nextTitle}>{neighbors.next.label} →</span>
+                  </a>
                 ) : (
-                  <ThinProjectBody project={project} />
+                  <a
+                    className={styles.nextBanner}
+                    href="/"
+                    onClick={(event) => handleProjectNav(event, '/')}
+                  >
+                    <span className={styles.lab}>Portfolio</span>
+                    <span className={styles.nextTitle}>All work →</span>
+                  </a>
                 )}
 
-                <nav className={styles.prevNext} aria-label="More case studies">
-                  {neighbors.previous ? (
-                    <a
-                      href={`/work/${neighbors.previous.slug}`}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        const href =
-                          projectBySlug(neighbors.previous!.slug)?.caseStudyHref ??
-                          `/work/${neighbors.previous!.slug}`
-                        if (href.startsWith('/demos/')) {
-                          window.location.assign(href)
-                          return
+                <div className={styles.footerSub}>
+                  <div className={styles.footerSubLinks}>
+                    {neighbors.previous ? (
+                      <a
+                        href={projectHref(neighbors.previous.slug)}
+                        onClick={(event) =>
+                          handleProjectNav(event, projectHref(neighbors.previous!.slug))
                         }
-                        navigate(href)
-                      }}
-                    >
-                      ← Previous
+                      >
+                        ← Previous: {neighbors.previous.label}
+                      </a>
+                    ) : null}
+                    <a href="/" onClick={(event) => handleProjectNav(event, '/')}>
+                      All work
                     </a>
-                  ) : (
-                    <span />
-                  )}
-                  <a
-                    href="/"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigate('/')
-                    }}
-                  >
-                    All work
-                  </a>
-                  {neighbors.next ? (
-                    <a
-                      href={`/work/${neighbors.next.slug}`}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        const href =
-                          projectBySlug(neighbors.next!.slug)?.caseStudyHref ??
-                          `/work/${neighbors.next!.slug}`
-                        if (href.startsWith('/demos/')) {
-                          window.location.assign(href)
-                          return
-                        }
-                        navigate(href)
-                      }}
-                    >
-                      Next →
-                    </a>
-                  ) : (
-                    <span />
-                  )}
-                </nav>
-              </div>
+                    <a href="#main">Back to top ↑</a>
+                  </div>
+                  <span>© 2026 Victoria Tsukanova</span>
+                </div>
+              </footer>
+            </>
+          ) : (
+            <div className={`${styles.inner} ${styles.notFound}`}>
+              <h1 className={styles.title}>Not found</h1>
+              <p className={styles.body}>This project page is not up yet.</p>
             </div>
-          </>
-        ) : (
-          <section className={styles.section}>
-            <h1 className={styles.title}>Not found</h1>
-            <p className={styles.body}>This project page is not up yet.</p>
-          </section>
-        )}
-      </main>
-      {project ? (
-        <footer className={styles.footer}>
-          <span>Vika Tsukanova · {project.label}</span>
-          <a href="#main">Back to top ↑</a>
-        </footer>
-      ) : null}
-      <ImageLightbox shot={lightbox} onClose={closeLightbox} />
-    </div>
+          )}
+        </main>
+
+        <svg className={styles.grain} aria-hidden="true">
+          <filter id="case-grain">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.9"
+              numOctaves="2"
+              stitchTiles="stitch"
+            />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#case-grain)" />
+        </svg>
+
+        <ImageLightbox shot={lightbox} onClose={closeLightbox} />
+      </div>
     </LightboxContext.Provider>
   )
+}
+
+export function ProjectPage({ slug }: { slug: string }) {
+  return <ProjectPageInner key={slug} slug={slug} />
 }
