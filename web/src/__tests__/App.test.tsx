@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import App from '../App'
 
@@ -59,5 +59,29 @@ describe('Portfolio routes and core UI', () => {
     renderAt('/work/non-existent-case-study')
 
     expect(screen.getByRole('heading', { level: 1, name: 'Not found' })).toBeInTheDocument()
+  })
+
+  it('toggles the mobile navigation menu and closes on Escape or link click', () => {
+    renderAt('/')
+
+    const toggle = screen.getByRole('button', { name: 'Open navigation menu' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(toggle).toHaveAccessibleName('Close navigation menu')
+
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+
+    const nav = screen.getByRole('navigation', { name: 'Main navigation' })
+    fireEvent.click(within(nav).getByRole('link', { name: 'About' }))
+    expect(screen.getByRole('button', { name: 'Open navigation menu' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
   })
 })

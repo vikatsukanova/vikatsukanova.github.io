@@ -149,6 +149,7 @@
 .heroMosaicWrap {
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .heroPixelGrid {
@@ -786,6 +787,14 @@
    RESPONSIVE BREAKPOINTS
 ================================ */
 @media (max-width: 960px) {
+  .heroContent {
+    max-width: 70%;
+  }
+
+  .typedLine {
+    font-size: clamp(0.95rem, 3.2vw, 2.1rem);
+  }
+
   .caseCard {
     grid-template-columns: 1fr;
     gap: 18px;
@@ -802,42 +811,183 @@
   }
 
   .heroSection {
-    padding-top: 8px;
+    padding: 0;
+  }
+
+  .heroMosaicWrap {
+    height: calc(100vh - 65px);
+    height: calc(100svh - 65px);
+    min-height: 500px;
+    max-height: 920px;
+  }
+
+  .page .heroPixelGrid {
+    width: 100%;
+    height: 100%;
+    left: auto;
+    transform: none;
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+    grid-template-rows: repeat(29, minmax(0, 1fr));
+  }
+
+  .page .heroPixelGrid :global(.px-cell) {
+    aspect-ratio: auto;
   }
 
   .heroContent {
-    width: max-content;
-    max-width: 56%;
-    top: 41.5%;
+    width: calc(100% - 56px);
+    max-width: 340px;
+    top: 41%;
   }
 
   .heroTitle {
-    font-size: clamp(1.25rem, 5.4vw, 2.2rem);
-    line-height: 1.05;
+    font-size: clamp(2.15rem, 10vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
   }
 
   .typedLine {
-    font-size: clamp(0.68rem, 2.9vw, 1.1rem);
+    margin-top: 0.24em;
+    font-size: clamp(0.95rem, 4.3vw, 1.35rem);
   }
 
   .heroCtaWrap {
-    margin-top: 8px;
+    margin-top: 22px;
   }
 
   .heroCtaWrap .btnPrimary {
-    padding: 6px 12px;
-    font-size: 0.7rem;
+    min-height: 46px;
+    padding: 12px 26px;
+    font-size: 0.94rem;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .stackCarouselSection {
+    padding-top: 28px;
+    padding-bottom: 36px;
+  }
+
+  .sectionHeaderRow {
+    margin-bottom: 22px;
+  }
+
+  .scrollBtn {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
+  .stackTrackWrap {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
   }
 
   .stackCard {
-    width: 188px;
-    padding: 18px;
+    width: 152px;
+    min-height: 126px;
+    padding: 18px 14px;
+    gap: 10px;
+  }
+
+  .stackCardTitle {
+    font-size: 0.95rem;
   }
 
   .stackTrack {
-    gap: 14px;
+    gap: 12px;
     padding-left: 18px;
     padding-right: 14px;
+  }
+
+  .pixelDividerWrap {
+    padding: 12px 0;
+  }
+
+  .caseStudiesSection {
+    padding: 44px 0;
+  }
+
+  .caseStudiesSection .sectionTitle {
+    margin-bottom: 24px;
+  }
+
+  .caseStudiesStack {
+    gap: 20px;
+  }
+
+  .caseCard {
+    padding: 12px;
+    border-radius: 14px;
+    gap: 14px;
+  }
+
+  .caseVisualPane {
+    border-radius: 10px;
+  }
+
+  .caseBodyPane {
+    padding: 6px 6px 8px;
+  }
+
+  .caseTitle {
+    font-size: clamp(1.35rem, 6vw, 1.75rem);
+    margin-bottom: 8px;
+  }
+
+  .caseSummary {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .caseSubnote {
+    margin-bottom: 16px;
+  }
+
+  .pixelHorizonWrap {
+    padding-top: 20px;
+  }
+
+  .siteFooter {
+    padding: 44px 0 32px;
+  }
+
+  .footerInner {
+    gap: 36px;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .footerLinks {
+    gap: 6px 18px;
+  }
+
+  .footerLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (hover: none) {
+  .caseCard:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+
+  .caseCard:hover .browserFrame {
+    transform: translateY(8%);
+  }
+
+  .caseCard:hover .phoneFrame {
+    transform: translateY(6%);
   }
 }
 

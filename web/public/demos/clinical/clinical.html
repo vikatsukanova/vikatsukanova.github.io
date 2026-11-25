@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F1F4F3">
   <title>Cardiology Dashboard — Victoria Tsukanova</title>
   <meta name="description" content="Cardiology dashboard product design case study: keeping patient context in view across history, assessments, and clinical results.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +19,10 @@
       <a href="/" class="brand" aria-label="Victoria Tsukanova homepage">
         <img src="/brand/victoriatsukanova-logo.png" alt="" width="85" height="35" class="brand-logo">
       </a>
-      <nav class="header-nav" aria-label="Main navigation">
+      <button type="button" class="menu-button" id="menuButton" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu">
+        <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+      <nav class="header-nav" id="siteNav" aria-label="Main navigation">
         <a href="/" class="nav-link is-active">Work</a>
         <a href="/about" class="nav-link">About</a>
         <a href="https://www.linkedin.com/in/victoriatsukanova" target="_blank" rel="noreferrer" class="nav-link">LinkedIn</a>
@@ -27,6 +31,7 @@
       </nav>
     </div>
   </header>
+  <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
   <main id="main">
     <div class="inner">
@@ -415,10 +420,43 @@
       });
 
       const siteHeader = document.getElementById('siteHeader');
+      const menuButton = document.getElementById('menuButton');
+      const siteNav = document.getElementById('siteNav');
+      const navBackdrop = document.getElementById('navBackdrop');
+
+      const setMenuOpen = (open) => {
+        if (!menuButton || !siteNav || !navBackdrop || !siteHeader) return;
+        menuButton.classList.toggle('is-open', open);
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        siteNav.classList.toggle('is-open', open);
+        navBackdrop.classList.toggle('is-open', open);
+        siteHeader.classList.toggle('is-scrolled', open || window.scrollY > 18);
+      };
+
       if (siteHeader) {
-        const updateHeader = () => siteHeader.classList.toggle('is-scrolled', window.scrollY > 18);
+        const updateHeader = () => {
+          const isMenuOpen = siteNav && siteNav.classList.contains('is-open');
+          siteHeader.classList.toggle('is-scrolled', Boolean(isMenuOpen) || window.scrollY > 18);
+        };
         updateHeader();
         window.addEventListener('scroll', updateHeader, { passive: true });
+      }
+
+      if (menuButton && siteNav && navBackdrop) {
+        menuButton.addEventListener('click', () => {
+          setMenuOpen(!siteNav.classList.contains('is-open'));
+        });
+        navBackdrop.addEventListener('click', () => setMenuOpen(false));
+        siteNav.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => setMenuOpen(false));
+        });
+        window.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') setMenuOpen(false);
+        });
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 680) setMenuOpen(false);
+        });
       }
 
       const lightbox = document.getElementById('shotLightbox');

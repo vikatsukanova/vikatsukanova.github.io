@@ -2,6 +2,7 @@ import { useEffect, useImperativeHandle, useRef, type Ref } from 'react'
 
 export type GridName =
   | 'hero'
+  | 'heroMobile'
   | 'divider1'
   | 'divider2'
   | 'horizon'
@@ -40,7 +41,7 @@ function generateBand(seed: number, rows: number, density: (r: number, n: number
   return out
 }
 
-// Exact 40-column pixel grids matching the layout architecture
+// Exact 40-column pixel grids matching the layout architecture (+ 16x29 portrait hero for mobile)
 const GRIDS: Record<GridName, readonly string[]> = {
   hero: [
     '.G.G.G..G.G.G.G...G..G...G...G.G..G...G.',
@@ -68,6 +69,37 @@ const GRIDS: Record<GridName, readonly string[]> = {
     '.PP.B.GcBPbc.cc..GPbbbbb..BBPGcPbG.GP.c.',
     'c.BBb..bBPPc..c.cbGcP.c..PBb.G..P..P.bBG',
     '.c.P....b.b.....c.bbBb...GP...c.b.G.BP..',
+  ],
+  heroMobile: [
+    '.G.G.G..G.G.G.G.',
+    'GGGGGG..b.G.GGGG',
+    'BBBGGB.c..G.GGGB',
+    'BbBBb.P....P.bBB',
+    'bbBBc........cBB',
+    'bbB..........Bbb',
+    'bbP..........Pbb',
+    'bP............Pb',
+    'PP............PP',
+    'PP............PP',
+    'Pc............cP',
+    'PP............PP',
+    'PP............PP',
+    'PP............PP',
+    'bP............Pb',
+    'bbP..........Pbb',
+    'bbB..........Bbb',
+    'bBBc........cBBb',
+    'BBBPb......bPBBB',
+    'GBBB.P....P.BBBG',
+    'GBBB.G.bb.G.BBBG',
+    'GGBB.GGccGG.BBGG',
+    'GGBB.G.BB.G.BBGG',
+    'cGbcPBbGBbBPcbGc',
+    'PB.GBbc..cbBG.BP',
+    '.cBB.bPcPcb.BBc.',
+    'c.b.G.bBBb.G.b.c',
+    '.P...b.c..b...P.',
+    '..c....P....G...',
   ],
   divider1: [
     'c....................B..................',
@@ -106,7 +138,7 @@ class PixelMosaicController {
   private el: HTMLDivElement
   private rows: readonly string[]
   private name: GridName
-  private cols = 40
+  private cols: number
   private cells: HTMLDivElement[] = []
   private filledCells: FilledCell[] = []
   private hasEntered = false
@@ -123,6 +155,7 @@ class PixelMosaicController {
     this.el = el
     this.rows = GRIDS[name]
     this.name = name
+    this.cols = this.rows[0]?.length ?? 40
     this.prefersReducedMotion = prefersReducedMotion
     this.build()
     this.el.addEventListener('pointermove', this.handlePointerMove)
@@ -196,12 +229,13 @@ class PixelMosaicController {
       return
     }
 
-    if (this.name === 'hero') {
-      const centerC = 19.5
+    if (this.name === 'hero' || this.name === 'heroMobile') {
+      const isMobileHero = this.name === 'heroMobile'
+      const centerC = (this.cols - 1) / 2
 
       this.filledCells.forEach(({ cell, r, c, ch }) => {
         const edgeDist = Math.abs(c - centerC)
-        const delay = Math.round(r * 28 + (19.5 - edgeDist) * 14 + Math.random() * 90)
+        const delay = Math.round(r * (isMobileHero ? 20 : 28) + (centerC - edgeDist) * 14 + Math.random() * 90)
         const flashToken =
           TOKENS[(r + c + Math.floor(Math.random() * TOKENS.length)) % TOKENS.length]
 
@@ -223,15 +257,18 @@ class PixelMosaicController {
         if (cell.dataset.base !== '.') return
         const r = Number(cell.dataset.row)
         const c = Number(cell.dataset.col)
-        const inTextClearing =
-          (r >= 3 && r <= 14 && c >= 9 && c <= 30) ||
-          (r >= 15 && r <= 16 && c >= 12 && c <= 27)
+        const inTextClearing = isMobileHero
+          ? r >= 4 && r <= 18 && c >= 2 && c <= 13
+          : (r >= 3 && r <= 14 && c >= 9 && c <= 30) ||
+            (r >= 15 && r <= 16 && c >= 12 && c <= 27)
         if (inTextClearing) return
 
-        const isPerimeterBand = c <= 12 || c >= 27 || r <= 4 || r >= 17
+        const isPerimeterBand = isMobileHero
+          ? c <= 3 || c >= 12 || r <= 4 || r >= 19
+          : c <= 12 || c >= 27 || r <= 4 || r >= 17
         if (!isPerimeterBand || (r + c) % 3 !== 0) return
 
-        const waveDelay = Math.round(r * 24 + (19.5 - Math.abs(c - centerC)) * 12)
+        const waveDelay = Math.round(r * (isMobileHero ? 18 : 24) + (centerC - Math.abs(c - centerC)) * 12)
         const waveToken = TOKENS[(r * 3 + c) % TOKENS.length]
 
         const tWaveOn = window.setTimeout(() => {
@@ -260,6 +297,7 @@ class PixelMosaicController {
   }
 
   private handlePointerMove = (e: PointerEvent) => {
+    if (e.pointerType !== 'mouse') return
     if (!this.prefersReducedMotion) {
       this.magnetizeAt(e.clientX, e.clientY)
     }
@@ -490,7 +528,7 @@ export function PixelMosaic({
     let rafId: number | null = null
     let io: IntersectionObserver | null = null
 
-    if (grid === 'hero') {
+    if (grid === 'hero' || grid === 'heroMobile') {
       rafId = window.requestAnimationFrame(() => controller.enter())
     } else {
       io = new IntersectionObserver(

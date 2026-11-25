@@ -90,7 +90,7 @@
 
 .body {
   margin: 0;
-  font-size: clamp(18px, 1.55vw, 22px);
+  font-size: clamp(16px, 1.55vw, 22px);
   line-height: 1.55;
   max-width: 820px;
   color: var(--ink);
@@ -586,6 +586,10 @@
 }
 
 @media (max-width: 760px) {
+  .grain {
+    display: none;
+  }
+
   .row {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -593,26 +597,38 @@
   }
 
   .rowLeadTop {
-    padding-top: 44px;
+    padding-top: 28px;
   }
 
   .rowLast {
-    padding-bottom: 56px;
+    padding-bottom: 52px;
   }
 
   .portraitCard {
-    max-width: 280px;
+    max-width: 240px;
+    padding: 10px;
+  }
+
+  .leadHeading {
+    font-size: clamp(20px, 5.4vw, 26px);
   }
 
   .jobButton {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    padding: 20px;
+    padding: 18px 20px;
+  }
+
+  .jobRoleWrap {
+    gap: 10px;
   }
 
   .jobMeta {
-    padding-left: 34px;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding-left: 0;
+    max-width: 100%;
     text-align: left;
   }
 
@@ -620,18 +636,73 @@
     padding: 16px 20px 22px;
   }
 
+  .jobIntro,
+  .jobCallout,
+  .jobBullet {
+    font-size: 15px;
+  }
+
   .eduGrid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .eduCard {
+    padding: 18px 20px;
+  }
+
+  .eduMeta {
+    flex-wrap: wrap;
+    gap: 4px 12px;
   }
 
   .footerInner {
     padding: 44px 20px 28px;
+    gap: 36px;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .footerLinks {
+    gap: 6px 18px;
+  }
+
+  .footerLinks a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
   }
 }
 
 @media (max-width: 520px) {
+  .portraitCard {
+    max-width: 200px;
+  }
+
   .skillsGrid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .skillCard {
+    flex-direction: row;
+    align-items: center;
+    padding: 16px 18px;
+    gap: 14px;
+  }
+
+  .skillLabel {
+    font-size: 15px;
+  }
+}
+
+@media (hover: none) {
+  .grain {
+    display: none;
   }
 }
 

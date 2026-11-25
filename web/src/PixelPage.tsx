@@ -227,8 +227,25 @@ function ProjectPreview({ item }: { item: WorkItem }) {
   )
 }
 
+function useIsMobileHero() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches,
+  )
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 640px)')
+    const sync = () => setIsMobile(media.matches)
+    sync()
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
+  }, [])
+
+  return isMobile
+}
+
 export function PixelPage() {
   const role = useTypedRole(ROLES)
+  const isMobileHero = useIsMobileHero()
   const [heroAnimKey, setHeroAnimKey] = useState(0)
 
   const pageRef = useRef<HTMLDivElement | null>(null)
@@ -347,6 +364,7 @@ export function PixelPage() {
     trackWrap.addEventListener('pointerleave', onPointerLeave)
     trackWrap.addEventListener('touchstart', onTouchStart, { passive: true })
     trackWrap.addEventListener('touchend', onTouchEnd, { passive: true })
+    trackWrap.addEventListener('touchcancel', onTouchEnd, { passive: true })
 
     if (!prefersReducedMotion) {
       let lastTime = performance.now()
@@ -376,15 +394,17 @@ export function PixelPage() {
       trackWrap.removeEventListener('pointerleave', onPointerLeave)
       trackWrap.removeEventListener('touchstart', onTouchStart)
       trackWrap.removeEventListener('touchend', onTouchEnd)
+      trackWrap.removeEventListener('touchcancel', onTouchEnd)
     }
   }, [])
 
-  // Subtle magnetic pull on Hero CTA
+  // Subtle magnetic pull on Hero CTA (mouse only)
   useEffect(() => {
     const magBtn = magBtnRef.current
     if (!magBtn || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
       const rect = magBtn.getBoundingClientRect()
       const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18
       const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18
@@ -422,7 +442,7 @@ export function PixelPage() {
           <div className={styles.heroMosaicWrap}>
             <PixelMosaic
               ref={heroMosaicRef}
-              grid="hero"
+              grid={isMobileHero ? 'heroMobile' : 'hero'}
               className={styles.heroPixelGrid}
             />
 
